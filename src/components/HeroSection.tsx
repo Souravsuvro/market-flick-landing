@@ -168,19 +168,21 @@ const HeroSection: React.FC = () => {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-custom hover:bg-custom/90 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
+              className="relative overflow-hidden bg-custom hover:bg-custom/90 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl group"
             >
               <span>Start for free</span>
-              <i className="fas fa-arrow-right text-green-500"></i>
+              <i className="fas fa-arrow-right text-white transition-transform duration-300 group-hover:translate-x-1"></i>
+              <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
             </motion.button>
             
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="border border-gray-300 hover:border-custom/90 text-gray-700 font-medium px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
+              className="relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-custom hover:text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group"
             >
-              <i className="fas fa-play-circle text-blue-500"></i>
+              <i className="fas fa-play-circle text-custom group-hover:text-white transition-colors duration-300"></i>
               <span>Live Demo</span>
+              <span className="absolute inset-0 bg-custom transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0 opacity-10"></span>
             </motion.button>
           </div>
         </nav>
