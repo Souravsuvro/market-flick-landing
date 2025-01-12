@@ -14,5 +14,13 @@
   ],
   "buildCommand": "npm run build",
   "outputDirectory": "build",
-  "devCommand": "npm start"
+  "devCommand": "npm start",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
+  ]
 }
