@@ -218,32 +218,27 @@ const Pricing = () => {
         </header>
 
         <nav aria-label="Billing Cycle Selection" className="flex justify-center mb-16">
-          <div className="inline-flex items-center bg-gray-100 rounded-full p-1 shadow-inner">
-            <button
-              aria-pressed={!isYearlyBilling}
+          <div className="flex justify-center items-center space-x-4 mb-12">
+            <span 
+              className={`text-sm font-medium ${!isYearlyBilling ? 'text-black' : 'text-gray-500'} cursor-pointer`}
               onClick={() => setIsYearlyBilling(false)}
-              className={`px-6 py-2 rounded-full transition-all duration-300 ${
-                !isYearlyBilling 
-                  ? 'bg-custom text-white shadow-lg' 
-                  : 'text-gray-600 hover:bg-gray-200'
-              }`}
             >
               Monthly
-            </button>
-            <button
-              aria-pressed={isYearlyBilling}
+            </span>
+            <div 
+              className="w-14 h-8 bg-gray-200 rounded-full relative cursor-pointer"
+              onClick={() => setIsYearlyBilling(!isYearlyBilling)}
+            >
+              <div 
+                className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isYearlyBilling ? 'translate-x-full' : ''}`}
+              ></div>
+            </div>
+            <span 
+              className={`text-sm font-medium ${isYearlyBilling ? 'text-black' : 'text-gray-500'} cursor-pointer`}
               onClick={() => setIsYearlyBilling(true)}
-              className={`px-6 py-2 rounded-full transition-all duration-300 relative ${
-                isYearlyBilling 
-                  ? 'bg-custom text-white shadow-lg' 
-                  : 'text-gray-600 hover:bg-gray-200'
-              }`}
             >
               Yearly
-              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                Save 20%
-              </span>
-            </button>
+            </span>
           </div>
         </nav>
 

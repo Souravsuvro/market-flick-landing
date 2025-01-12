@@ -148,7 +148,7 @@ const HeroSection: React.FC = () => {
       >
         <motion.mark 
           whileHover={{ scale: 1.05 }}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-custom/10 rounded-full mb-6"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full mb-6"
         >
           <span className="text-custom font-semibold">New</span>
           <span className="text-gray-600 text-sm">Analyze 10x to Grow 100x with us</span>
@@ -183,6 +183,7 @@ const HeroSection: React.FC = () => {
               <i className="fas fa-play-circle text-custom group-hover:text-white transition-colors duration-300"></i>
               <span>Live Demo</span>
               <span className="absolute inset-0 bg-custom transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0 opacity-10"></span>
+              <span className="absolute inset-0 bg-custom opacity-0 group-hover:opacity-10 transition-opacity duration-300 z-5"></span>
             </motion.button>
           </div>
         </nav>

@@ -37,19 +37,21 @@ const VideoSection: React.FC = () => {
         
         <motion.div 
           variants={itemVariants}
-          className="relative rounded-2xl overflow-hidden shadow-2xl border border-gray-200"
+          className="relative"
         >
-          <div className="aspect-video bg-black">
-            <iframe 
-              width="100%" 
-              height="100%" 
-              src="https://www.youtube.com/embed/3TXTRg4gN6A?autoplay=0&controls=1" 
-              title="Market Flick AI Market Research Demo" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowFullScreen
-              className="w-full h-full object-cover"
-            ></iframe>
+          <div className="w-full max-w-4xl mx-auto px-4">
+            <div className="aspect-w-16 aspect-h-9 rounded-2xl overflow-hidden shadow-2xl border border-gray-200">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/3TXTRg4gN6A?autoplay=0&controls=1" 
+                title="Market Flick AI Market Research Demo" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen
+                className="w-full h-full object-cover"
+              ></iframe>
+            </div>
           </div>
         </motion.div>
 
