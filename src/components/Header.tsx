@@ -87,9 +87,11 @@ const Header: React.FC = () => {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-custom hover:bg-custom/90 text-black font-medium px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="relative overflow-hidden bg-transparent border-2 border-black text-black font-semibold px-8 py-2.5 rounded-full transition-all duration-300 group"
             >
-              Live Demo
+              <span className="relative z-10">Live Demo</span>
+              <span className="absolute inset-0 bg-black transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0"></span>
+              <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
             </motion.button>
           </motion.div>
 
@@ -131,9 +133,11 @@ const Header: React.FC = () => {
                   <motion.button 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full bg-custom hover:bg-custom/90 text-black font-medium px-4 py-3 rounded-lg transition-all duration-300"
+                    className="relative overflow-hidden bg-transparent border-2 border-black text-black font-semibold px-8 py-2.5 rounded-full transition-all duration-300 group"
                   >
-                    Live Demo
+                    <span className="relative z-10">Live Demo</span>
+                    <span className="absolute inset-0 bg-black transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0"></span>
+                    <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
                   </motion.button>
                 </div>
               </div>
