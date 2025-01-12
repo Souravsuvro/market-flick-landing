@@ -119,7 +119,7 @@ const HeroSection: React.FC = () => {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-full rounded-xl bg-custom py-4 text-white font-semibold hover:bg-custom/90 flex items-center justify-center gap-3 transform transition-all duration-300 shadow-lg mt-6"
+            className="w-full rounded-xl bg-custom py-4 text-black font-semibold hover:bg-custom/90 flex items-center justify-center gap-3 transform transition-all duration-300 shadow-lg mt-6"
             onClick={handleAnalyzeMarket}
           >
             <i className="fas fa-chart-line text-green-500"></i>
