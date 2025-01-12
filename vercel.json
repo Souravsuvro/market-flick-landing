@@ -1,26 +1,10 @@
 {
   "version": 2,
   "framework": "create-react-app",
-  "builds": [
-    { "src": "package.json", "use": "@vercel/static-build" }
-  ],
-  "routes": [
-    { "src": "^/static/(.*)", "dest": "/static/$1" },
-    { "src": "^/favicon.ico$", "dest": "/favicon.ico" },
-    { "src": "^/manifest.json$", "dest": "/manifest.json" },
-    { "src": "^/logo192.png$", "dest": "/logo192.png" },
-    { "src": "^/logo512.png$", "dest": "/logo512.png" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "devCommand": "npm start",
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
-      ]
-    }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
