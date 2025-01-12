@@ -87,7 +87,7 @@ const Header: React.FC = () => {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-custom hover:bg-custom/90 text-white font-medium px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="bg-custom hover:bg-custom/90 text-black font-medium px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Live Demo
             </motion.button>
@@ -131,7 +131,7 @@ const Header: React.FC = () => {
                   <motion.button 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-full bg-custom hover:bg-custom/90 text-white font-medium px-4 py-3 rounded-lg transition-all duration-300"
+                    className="w-full bg-custom hover:bg-custom/90 text-black font-medium px-4 py-3 rounded-lg transition-all duration-300"
                   >
                     Live Demo
                   </motion.button>
