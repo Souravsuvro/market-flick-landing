@@ -168,7 +168,7 @@ const HeroSection: React.FC = () => {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative overflow-hidden bg-custom hover:bg-custom/90 text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl group"
+              className="relative overflow-hidden bg-custom hover:bg-custom/90 text-black font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl group"
             >
               <span>Start for free</span>
               <i className="fas fa-arrow-right text-white transition-transform duration-300 group-hover:translate-x-1"></i>
