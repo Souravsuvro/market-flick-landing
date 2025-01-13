@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 /**
- * ProductVideoSection component showcases product capabilities through an embedded video
+ * ProductVideoSection showcases product capabilities through an embedded video
  * and key product highlights.
  * 
  * Key Features:
