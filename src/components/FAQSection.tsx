@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+/**
+ * FAQSection component displays frequently asked questions with expandable answers.
+ * 
+ * Key Features:
+ * - Accordion-style FAQ list
+ * - Animated expand/collapse with Framer Motion
+ * - Responsive design using Tailwind CSS
+ * - Support button for additional assistance
+ */
 interface FAQItem {
   question: string;
   answer: string;
 }
 
 const FAQSection: React.FC = () => {
+  // State to track which FAQ item is currently expanded
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
+  // FAQ data with questions and answers
   const faqData: FAQItem[] = [
     {
       question: "How does Market Flick's AI analyze market research?",
@@ -32,36 +43,44 @@ const FAQSection: React.FC = () => {
     }
   ];
 
+  // Animation variants for FAQ list entrance
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  // Variants for individual FAQ items
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  /**
+   * Toggle FAQ item expansion
+   * @param index - Index of the FAQ item to toggle
+   */
   const toggleFAQ = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { 
-        staggerChildren: 0.1,
-        delayChildren: 0.2 
-      } 
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { 
-        type: "spring", 
-        stiffness: 100 
-      } 
-    }
-  };
-
   return (
+    // FAQ section with responsive layout
     <section className="bg-gray-50 py-16 px-4">
       <div className="max-w-4xl mx-auto">
+        {/* Section header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -85,6 +104,7 @@ const FAQSection: React.FC = () => {
           </p>
         </motion.div>
 
+        {/* FAQ List */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -97,6 +117,7 @@ const FAQSection: React.FC = () => {
               variants={itemVariants}
               className="bg-white border border-gray-200 rounded-xl overflow-hidden"
             >
+              {/* FAQ Question Header */}
               <button 
                 onClick={() => toggleFAQ(index)}
                 className="w-full flex justify-between items-center p-6 text-left focus:outline-none"
@@ -110,6 +131,7 @@ const FAQSection: React.FC = () => {
                 />
               </button>
 
+              {/* FAQ Answer with Animated Expansion */}
               <AnimatePresence>
                 {activeIndex === index && (
                   <motion.div
@@ -134,6 +156,7 @@ const FAQSection: React.FC = () => {
           ))}
         </motion.div>
 
+        {/* Support Section */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

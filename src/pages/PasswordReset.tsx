@@ -1,126 +1,193 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
+/**
+ * PasswordReset page allows users to reset their account password.
+ * 
+ * Key Features:
+ * - Email input for password reset
+ * - Form validation
+ * - Error handling
+ * - Animated transitions
+ * - Responsive design
+ */
 const PasswordReset: React.FC = () => {
+  // State management for form inputs and validation
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [resetError, setResetError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Email validation regex pattern
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  /**
+   * Validate email input
+   * @param {string} inputEmail - Email to validate
+   * @returns {boolean} - Whether email is valid
+   */
+  const validateEmail = (inputEmail: string) => {
+    return emailRegex.test(inputEmail);
+  };
+
+  /**
+   * Handle email input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    setIsEmailValid(validateEmail(inputEmail));
+    setResetError('');
+  };
+
+  /**
+   * Submit password reset request
+   * @param {React.FormEvent} e - Form submission event
+   */
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic email validation
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address');
+    // Reset previous errors
+    setResetError('');
+
+    // Validate email before submission
+    if (!validateEmail(email)) {
+      setIsEmailValid(false);
+      setResetError('Please enter a valid email address.');
       return;
     }
 
-    // Implement password reset logic here
-    console.log('Password Reset Request', { email });
-    
-    // Show success state
-    setIsSubmitted(true);
+    try {
+      // Simulated password reset request
+      // In a real app, this would be an API call
+      console.log('Password reset requested for:', email);
+      
+      // Show success message and redirect
+      navigate('/reset-confirmation', { 
+        state: { email: email } 
+      });
+    } catch (error) {
+      // Handle reset errors
+      setResetError('Unable to reset password. Please try again.');
+      console.error('Password reset error:', error);
+    }
+  };
+
+  // Animation variants for page entrance
+  const pageVariants = {
+    initial: { opacity: 0, y: 50 },
+    in: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut'
+      }
+    },
+    out: { 
+      opacity: 0, 
+      y: -50,
+      transition: {
+        duration: 0.5,
+        ease: 'easeIn'
+      }
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white font-['Inter'] flex flex-col justify-center items-center px-4">
-      <motion.div 
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
-      >
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-white rounded-lg shadow-lg p-8"
+    // Full-page container with centered content
+    <motion.div
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12"
+    >
+      {/* Password Reset Card */}
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+        {/* Page Header */}
+        <div className="text-center">
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+            Reset Your Password
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Enter your email to receive a password reset link
+          </p>
+        </div>
+
+        {/* Reset Form */}
+        <form 
+          onSubmit={handleResetPassword} 
+          className="mt-8 space-y-6"
         >
-          <div className="text-center mb-6">
-            <motion.i 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-              className="fas fa-lock text-4xl text-custom mb-4 block text-center"
-            ></motion.i>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-              Reset Password
-            </h2>
-            <p className="text-gray-600">
-              {isSubmitted 
-                ? "Check your email for a password reset link" 
-                : "Enter your email to reset your password"}
-            </p>
+          {/* Email Input */}
+          <div>
+            <label 
+              htmlFor="email" 
+              className="sr-only"
+            >
+              Email address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              value={email}
+              onChange={handleEmailChange}
+              placeholder="Email address"
+              className={`
+                appearance-none rounded-md relative block w-full px-3 py-2 
+                border ${isEmailValid ? 'border-gray-300' : 'border-red-500'}
+                placeholder-gray-500 text-gray-900 
+                focus:outline-none focus:ring-custom focus:border-custom
+              `}
+            />
+            {/* Email Validation Error Message */}
+            {!isEmailValid && email && (
+              <p className="mt-2 text-sm text-red-600">
+                Please enter a valid email address
+              </p>
+            )}
           </div>
 
-          {!isSubmitted ? (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i className="fas fa-envelope text-gray-400"></i>
-                  </div>
-                  <input 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
-                    placeholder="Enter your email address"
-                  />
-                </div>
-              </div>
-
-              <motion.button 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit" 
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-medium py-2.5 rounded-lg hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-              >
-                Send Reset Link
-              </motion.button>
-            </form>
-          ) : (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="text-center"
-            >
-              <i className="fas fa-check-circle text-4xl text-green-500 mb-4 block"></i>
-              <p className="text-gray-600 mb-4">
-                A password reset link has been sent to {email}
-              </p>
-              <Link 
-                to="/signin"
-                className="text-custom hover:text-custom-600 font-medium"
-              >
-                Return to Login
-              </Link>
-            </motion.div>
+          {/* Reset Error Message */}
+          {resetError && (
+            <div className="text-center text-sm text-red-600">
+              {resetError}
+            </div>
           )}
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 mb-4">
-              Remembered your password?{' '}
-              <Link 
-                to="/signin" 
-                className="text-custom hover:text-custom-600 font-medium"
-              >
-                Login here
-              </Link>
-            </p>
-            <div className="flex items-center justify-center text-sm text-gray-500">
-              <i className="fas fa-shield-alt mr-2 text-custom"></i>
-              Your information is secure
-            </div>
-            <p className="mt-4 text-sm text-gray-500">
-              If you signed up with Google, use your Google account to sign in.
-            </p>
-          </div>
-        </motion.div>
-      </motion.div>
-    </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={!isEmailValid || !email}
+            className={`
+              group relative w-full flex justify-center py-2 px-4 
+              border border-transparent text-sm font-medium rounded-md 
+              text-white bg-custom
+              ${(!isEmailValid || !email) 
+                ? 'opacity-50 cursor-not-allowed' 
+                : 'hover:bg-custom-dark focus:outline-none focus:ring-2 focus:ring-custom'}
+            `}
+          >
+            Send Reset Link
+          </button>
+        </form>
+
+        {/* Navigation Links */}
+        <div className="text-center mt-6">
+          <Link 
+            to="/signin" 
+            className="font-medium text-custom hover:text-custom-dark"
+          >
+            Back to Sign In
+          </Link>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

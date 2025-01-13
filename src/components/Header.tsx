@@ -2,31 +2,30 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+/**
+ * Header component provides site-wide navigation and responsive mobile menu.
+ * 
+ * Key Features:
+ * - Fixed top navigation bar
+ * - Responsive design with mobile menu
+ * - Scroll-based styling changes
+ * - Animated menu transitions
+ * - Dynamic navigation links
+ */
 const Header: React.FC = () => {
+  // State to manage mobile menu and scroll status
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const featuresRef = useRef<HTMLDivElement>(null);
   const pricingRef = useRef<HTMLDivElement>(null);
 
+  // Function to scroll to a specific section
   const scrollToSection = (elementRef: React.RefObject<HTMLDivElement>) => {
     elementRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
+  // Navigation links configuration
   const navigationLinks = [
     { 
       name: 'Features', 
@@ -54,7 +53,25 @@ const Header: React.FC = () => {
     { name: 'Contact', path: '/contact' }
   ];
 
+  // Effect to handle scroll-based styling
+  useEffect(() => {
+    const handleScroll = () => {
+      // Change header style when scrolled past top
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    // Add and remove scroll event listener
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
+    // Fixed header with dynamic background and shadow
     <header 
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
         isScrolled 
@@ -62,9 +79,10 @@ const Header: React.FC = () => {
           : 'bg-transparent'
       }`}
     >
+      {/* Main navigation container */}
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo and Brand */}
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

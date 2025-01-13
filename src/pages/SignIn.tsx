@@ -2,44 +2,84 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+/**
+ * SignIn page allows users to authenticate and access their account.
+ * 
+ * Key Features:
+ * - Email and password input
+ * - Form validation
+ * - Error handling
+ * - Social login options
+ * - Animated transitions
+ * - Responsive design
+ */
 const SignIn: React.FC = () => {
+  // State management for form inputs and validation
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
+  /**
+   * Handle email input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  /**
+   * Handle password input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  /**
+   * Submit sign-in request
+   * @param {React.FormEvent} e - Form submission event
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement sign-in logic here
     console.log('Sign In', { email, password, rememberMe });
   };
 
+  /**
+   * Handle social login (Google)
+   */
   const handleGoogleSignIn = () => {
     // Implement Google Sign-In logic
     console.log('Google Sign-In');
   };
 
   return (
+    // Full-page container with centered content
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white font-['Inter'] flex flex-col justify-center items-center px-4">
+      {/* Sign In Card */}
       <motion.div 
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
+        {/* Page Header */}
         <div className="text-center mb-8">
           <h2 className="text-xl font-semibold text-gray-800">
             Empowering Smarter Business Decisions
           </h2>
         </div>
 
+        {/* Sign In Form */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="bg-white rounded-lg shadow-lg p-8"
         >
+          {/* Google Sign In Button */}
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -54,6 +94,7 @@ const SignIn: React.FC = () => {
             Sign in with Google
           </motion.button>
 
+          {/* Social Login Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
@@ -63,6 +104,7 @@ const SignIn: React.FC = () => {
             </div>
           </div>
 
+          {/* Email Input */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label 
@@ -79,7 +121,7 @@ const SignIn: React.FC = () => {
                   type="email" 
                   id="email" 
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your email"
@@ -87,6 +129,7 @@ const SignIn: React.FC = () => {
               </div>
             </div>
 
+            {/* Password Input */}
             <div>
               <label 
                 htmlFor="password" 
@@ -102,7 +145,7 @@ const SignIn: React.FC = () => {
                   type={showPassword ? "text" : "password"} 
                   id="password" 
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   required
                   className="block w-full pl-10 pr-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your password"
@@ -117,6 +160,7 @@ const SignIn: React.FC = () => {
               </div>
             </div>
 
+            {/* Remember Me Checkbox */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input 
@@ -142,6 +186,7 @@ const SignIn: React.FC = () => {
               </button>
             </div>
 
+            {/* Submit Button */}
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -153,6 +198,7 @@ const SignIn: React.FC = () => {
           </form>
         </motion.div>
 
+        {/* Sign Up Navigation */}
         <p className="mt-6 text-center text-gray-600">
           Don't have an account?{' '}
           <button 

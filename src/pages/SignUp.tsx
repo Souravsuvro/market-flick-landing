@@ -2,7 +2,19 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
+/**
+ * SignUp page allows new users to create an account.
+ * 
+ * Key Features:
+ * - Full name, email, and password input
+ * - Form validation
+ * - Error handling
+ * - Social signup options
+ * - Animated transitions
+ * - Responsive design
+ */
 const SignUp: React.FC = () => {
+  // State management for form inputs and validation
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,6 +22,84 @@ const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
+  /**
+   * Validate full name input
+   * @param {string} inputName - Name to validate
+   * @returns {boolean} - Whether name is valid
+   */
+  const validateName = (inputName: string) => {
+    return inputName.trim().length >= 2;
+  };
+
+  /**
+   * Validate email input
+   * @param {string} inputEmail - Email to validate
+   * @returns {boolean} - Whether email is valid
+   */
+  const validateEmail = (inputEmail: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(inputEmail);
+  };
+
+  /**
+   * Validate password input
+   * @param {string} inputPassword - Password to validate
+   * @returns {boolean} - Whether password meets requirements
+   */
+  const validatePassword = (inputPassword: string) => {
+    return inputPassword.length >= 8;
+  };
+
+  /**
+   * Validate password confirmation
+   * @param {string} inputPassword - Original password
+   * @param {string} inputConfirmPassword - Confirmation password
+   * @returns {boolean} - Whether passwords match
+   */
+  const validateConfirmPassword = (inputPassword: string, inputConfirmPassword: string) => {
+    return inputPassword === inputConfirmPassword;
+  };
+
+  /**
+   * Handle full name input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputName = e.target.value;
+    setFullName(inputName);
+  };
+
+  /**
+   * Handle email input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+  };
+
+  /**
+   * Handle password input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputPassword = e.target.value;
+    setPassword(inputPassword);
+  };
+
+  /**
+   * Handle password confirmation input changes
+   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
+   */
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputConfirmPassword = e.target.value;
+    setConfirmPassword(inputConfirmPassword);
+  };
+
+  /**
+   * Submit sign-up request
+   * @param {React.FormEvent} e - Form submission event
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -28,31 +118,39 @@ const SignUp: React.FC = () => {
     console.log('Sign Up', { fullName, email, password });
   };
 
+  /**
+   * Handle social signup (Google)
+   */
   const handleGoogleSignUp = () => {
     // Implement Google Sign-Up logic
     console.log('Google Sign-Up');
   };
 
   return (
+    // Full-page container with centered content
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white font-['Inter'] flex flex-col justify-center items-center px-4">
+      {/* Sign Up Card */}
       <motion.div 
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className="w-full max-w-md"
       >
+        {/* Page Header */}
         <div className="text-center mb-8">
           <h2 className="text-xl font-semibold text-gray-800">
             Empowering Smarter Business Decisions
           </h2>
         </div>
 
+        {/* Sign Up Form */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
           className="bg-white rounded-lg shadow-lg p-8"
         >
+          {/* Social Login Options */}
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -67,6 +165,7 @@ const SignUp: React.FC = () => {
             Sign up with Google
           </motion.button>
 
+          {/* Form Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
@@ -76,7 +175,9 @@ const SignUp: React.FC = () => {
             </div>
           </div>
 
+          {/* Form Fields */}
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Full Name Input */}
             <div>
               <label 
                 htmlFor="name" 
@@ -92,7 +193,7 @@ const SignUp: React.FC = () => {
                   type="text" 
                   id="name" 
                   value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
+                  onChange={handleNameChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your full name"
@@ -100,6 +201,7 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
+            {/* Email Input */}
             <div>
               <label 
                 htmlFor="signup-email" 
@@ -115,7 +217,7 @@ const SignUp: React.FC = () => {
                   type="email" 
                   id="signup-email" 
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleEmailChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your email"
@@ -123,6 +225,7 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
+            {/* Password Input */}
             <div>
               <label 
                 htmlFor="signup-password" 
@@ -138,7 +241,7 @@ const SignUp: React.FC = () => {
                   type={showPassword ? "text" : "password"} 
                   id="signup-password" 
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={handlePasswordChange}
                   required
                   minLength={8}
                   className="block w-full pl-10 pr-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
@@ -154,6 +257,7 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
+            {/* Confirm Password Input */}
             <div>
               <label 
                 htmlFor="confirm-password" 
@@ -169,7 +273,7 @@ const SignUp: React.FC = () => {
                   type="password" 
                   id="confirm-password" 
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={handleConfirmPasswordChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Confirm your password"
@@ -177,6 +281,7 @@ const SignUp: React.FC = () => {
               </div>
             </div>
 
+            {/* Terms and Conditions */}
             <div className="flex items-center">
               <input 
                 type="checkbox" 
@@ -206,6 +311,7 @@ const SignUp: React.FC = () => {
               </label>
             </div>
 
+            {/* Submit Button */}
             <motion.button 
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -217,6 +323,7 @@ const SignUp: React.FC = () => {
           </form>
         </motion.div>
 
+        {/* Sign In Navigation */}
         <p className="mt-6 text-center text-gray-600">
           Already have an account?{' '}
           <Link 
