@@ -15,19 +15,19 @@ import { Link } from 'react-router-dom';
  */
 const SignUp: React.FC = () => {
   // State management for form inputs and validation
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userFullName, setUserFullName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [userConfirmPassword, setUserConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [userAgreementConsent, setUserAgreementConsent] = useState(false);
 
   /**
    * Validate full name input
    * @param {string} inputName - Name to validate
    * @returns {boolean} - Whether name is valid
    */
-  const validateName = (inputName: string) => {
+  const validateFullName = (inputName: string) => {
     return inputName.trim().length >= 2;
   };
 
@@ -64,9 +64,9 @@ const SignUp: React.FC = () => {
    * Handle full name input changes
    * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
    */
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputName = e.target.value;
-    setFullName(inputName);
+    setUserFullName(inputName);
   };
 
   /**
@@ -75,7 +75,7 @@ const SignUp: React.FC = () => {
    */
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputEmail = e.target.value;
-    setEmail(inputEmail);
+    setUserEmail(inputEmail);
   };
 
   /**
@@ -84,7 +84,7 @@ const SignUp: React.FC = () => {
    */
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputPassword = e.target.value;
-    setPassword(inputPassword);
+    setUserPassword(inputPassword);
   };
 
   /**
@@ -93,7 +93,7 @@ const SignUp: React.FC = () => {
    */
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputConfirmPassword = e.target.value;
-    setConfirmPassword(inputConfirmPassword);
+    setUserConfirmPassword(inputConfirmPassword);
   };
 
   /**
@@ -104,18 +104,18 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     
     // Basic validation
-    if (password !== confirmPassword) {
+    if (userPassword !== userConfirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
-    if (!agreedToTerms) {
+    if (!userAgreementConsent) {
       alert("Please agree to the Terms of Service and Privacy Policy");
       return;
     }
 
     // Implement sign-up logic here
-    console.log('Sign Up', { fullName, email, password });
+    console.log('Sign Up', { userFullName, userEmail, userPassword });
   };
 
   /**
@@ -180,7 +180,7 @@ const SignUp: React.FC = () => {
             {/* Full Name Input */}
             <div>
               <label 
-                htmlFor="name" 
+                htmlFor="userFullName" 
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Full Name
@@ -191,9 +191,9 @@ const SignUp: React.FC = () => {
                 </div>
                 <input 
                   type="text" 
-                  id="name" 
-                  value={fullName}
-                  onChange={handleNameChange}
+                  id="userFullName" 
+                  value={userFullName}
+                  onChange={handleFullNameChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your full name"
@@ -204,7 +204,7 @@ const SignUp: React.FC = () => {
             {/* Email Input */}
             <div>
               <label 
-                htmlFor="signup-email" 
+                htmlFor="userEmail" 
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Email address
@@ -215,8 +215,8 @@ const SignUp: React.FC = () => {
                 </div>
                 <input 
                   type="email" 
-                  id="signup-email" 
-                  value={email}
+                  id="userEmail" 
+                  value={userEmail}
                   onChange={handleEmailChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
@@ -228,7 +228,7 @@ const SignUp: React.FC = () => {
             {/* Password Input */}
             <div>
               <label 
-                htmlFor="signup-password" 
+                htmlFor="userPassword" 
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Password
@@ -239,8 +239,8 @@ const SignUp: React.FC = () => {
                 </div>
                 <input 
                   type={showPassword ? "text" : "password"} 
-                  id="signup-password" 
-                  value={password}
+                  id="userPassword" 
+                  value={userPassword}
                   onChange={handlePasswordChange}
                   required
                   minLength={8}
@@ -260,7 +260,7 @@ const SignUp: React.FC = () => {
             {/* Confirm Password Input */}
             <div>
               <label 
-                htmlFor="confirm-password" 
+                htmlFor="userConfirmPassword" 
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Confirm Password
@@ -271,8 +271,8 @@ const SignUp: React.FC = () => {
                 </div>
                 <input 
                   type="password" 
-                  id="confirm-password" 
-                  value={confirmPassword}
+                  id="userConfirmPassword" 
+                  value={userConfirmPassword}
                   onChange={handleConfirmPasswordChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
@@ -285,13 +285,13 @@ const SignUp: React.FC = () => {
             <div className="flex items-center">
               <input 
                 type="checkbox" 
-                id="terms" 
-                checked={agreedToTerms}
-                onChange={() => setAgreedToTerms(!agreedToTerms)}
+                id="userAgreementConsent" 
+                checked={userAgreementConsent}
+                onChange={() => setUserAgreementConsent(!userAgreementConsent)}
                 className="h-4 w-4 text-custom border-gray-300 rounded focus:ring-custom"
               />
               <label 
-                htmlFor="terms" 
+                htmlFor="userAgreementConsent" 
                 className="ml-2 block text-sm text-gray-700"
               >
                 I agree to the{' '}
