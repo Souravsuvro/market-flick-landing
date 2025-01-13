@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 
+/**
+ * Interface for plan features.
+ * 
+ * @property {string} text - Feature description.
+ * @property {boolean} included - Whether the feature is included in the plan.
+ * @property {string} icon - Font Awesome icon class.
+ * @property {string} iconColor - Icon color class.
+ */
 interface PlanFeature {
   text: string;
   included: boolean;
@@ -7,6 +15,16 @@ interface PlanFeature {
   iconColor: string;
 }
 
+/**
+ * Interface for pricing plans.
+ * 
+ * @property {string} name - Plan name.
+ * @property {string} price - Plan price.
+ * @property {PlanFeature[]} features - Plan features.
+ * @property {string} buttonText - Button text.
+ * @property {boolean} [highlight] - Whether the plan is highlighted.
+ * @property {string} description - Plan description.
+ */
 interface PricingPlan {
   name: string;
   price: string;
@@ -16,9 +34,20 @@ interface PricingPlan {
   description: string;
 }
 
+/**
+ * Pricing component displays subscription plans for Market Flick.
+ * 
+ * Key Features:
+ * - Monthly/Yearly billing toggle
+ * - Responsive pricing cards
+ * - Highlight for recommended plan
+ * - Tailwind CSS for styling and responsiveness
+ */
 const Pricing = () => {
+  // State to manage billing cycle (monthly/yearly)
   const [isYearlyBilling, setIsYearlyBilling] = useState(false);
 
+  // Pricing plan details
   const plans: PricingPlan[] = [
     {
       name: 'Starter',
@@ -163,6 +192,12 @@ const Pricing = () => {
     }
   ];
 
+  /**
+   * Render plan features as an unordered list.
+   * 
+   * @param {PlanFeature[]} features - Plan features.
+   * @returns {JSX.Element} Unordered list of plan features.
+   */
   const renderPlanFeatures = (features: PlanFeature[]) => {
     return (
       <ul className="space-y-4 mb-6">
@@ -199,12 +234,14 @@ const Pricing = () => {
   };
 
   return (
+    // Pricing section with gradient background
     <section 
       id="pricing-section"
       aria-labelledby="pricing-title" 
       className="py-24 bg-gradient-to-b from-white to-gray-50"
     >
       <div className="max-w-7xl mx-auto px-4">
+        {/* Section header */}
         <header className="text-center mb-16">
           <h2 
             id="pricing-title" 
@@ -218,6 +255,7 @@ const Pricing = () => {
           </p>
         </header>
 
+        {/* Billing cycle toggle */}
         <nav aria-label="Billing Cycle Selection" className="flex justify-center mb-16">
           <div className="flex justify-center items-center space-x-4 mb-12">
             <span 
@@ -243,6 +281,7 @@ const Pricing = () => {
           </div>
         </nav>
 
+        {/* Pricing cards grid */}
         <article 
           aria-label="Pricing Plans" 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
@@ -261,6 +300,7 @@ const Pricing = () => {
                 }
               `}
             >
+              {/* Plan header */}
               <header className="mb-6">
                 <h3 
                   id={`plan-${plan.name}-title`} 
@@ -279,8 +319,10 @@ const Pricing = () => {
                 </p>
               </header>
 
+              {/* Plan features */}
               {renderPlanFeatures(plan.features)}
 
+              {/* Select plan button */}
               <footer>
                 <button 
                   aria-label={`Select ${plan.name} Plan`}
@@ -299,6 +341,7 @@ const Pricing = () => {
           ))}
         </article>
 
+        {/* Section footer */}
         <footer className="text-center mt-12">
           <p className="text-sm text-gray-600 italic">
             * All plans include a 14-day free trial. No credit card required.

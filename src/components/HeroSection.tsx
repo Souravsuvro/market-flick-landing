@@ -1,10 +1,23 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 
+/**
+ * HeroSection component represents the landing page's main hero section.
+ * It includes a headline, subheadline, call-to-action buttons, and a new mark.
+ * 
+ * Key Features:
+ * - Animated motion effects using Framer Motion
+ * - Responsive design with Tailwind CSS
+ * - Live Demo and Watch Demo buttons
+ * - "New" mark to highlight recent updates
+ */
 const HeroSection: React.FC = () => {
+  // State variables for business idea, selected location, and animated text
   const [businessIdea, setBusinessIdea] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [animatedText, setAnimatedText] = useState('');
+
+  // Memoized array of placeholder texts for animated typing effect
   const placeholderTexts = useMemo(() => [
     'AI-powered coffee shop in San Francisco',
     'Sustainable fashion brand in London',
@@ -13,6 +26,32 @@ const HeroSection: React.FC = () => {
     'Online learning platform for professionals'
   ], []);
 
+  // Animation variants for staggered entrance effects
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  // Variants for individual elements to create smooth entrance animation
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  // Effect hook to handle animated typing effect
   useEffect(() => {
     let currentIndex = 0;
     let isDeleting = false;
@@ -47,35 +86,14 @@ const HeroSection: React.FC = () => {
     };
   }, [animatedText.length, placeholderTexts]);
 
+  // Function to handle market analysis
   const handleAnalyzeMarket = () => {
     // Implement market analysis logic
     console.log('Analyzing market for:', { businessIdea, selectedLocation });
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { 
-        staggerChildren: 0.3,
-        delayChildren: 0.2 
-      } 
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
-      opacity: 1,
-      transition: { 
-        type: "spring", 
-        stiffness: 100 
-      } 
-    }
-  };
-
   return (
+    // Full-width container with centered content and responsive padding
     <motion.section 
       initial="hidden"
       animate="visible"

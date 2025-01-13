@@ -1,62 +1,79 @@
 import React from 'react';
 
+/**
+ * Features component showcases the key capabilities of Market Flick.
+ * 
+ * Key Features:
+ * - Grid layout of feature cards
+ * - Responsive design using Tailwind CSS
+ * - Icons representing different market research capabilities
+ */
 const featuresSectionOne = [
   {
-    icon: 'fa-chart-line',
-    iconColor: 'text-blue-500',
+    icon: 'fa-chart-line', // Font Awesome icon class
+    iconColor: 'text-blue-500', // Tailwind color class for icon
     title: '360-Degree Market Analysis',
     description: 'Assess your idea\'s viability with SWOT, PESTEL, and Porter\'s Five Forces evaluations, helping you prepare for challenges and seize opportunities.'
   },
   {
-    icon: 'fa-lightbulb',
+    icon: 'fa-lightbulb', 
     iconColor: 'text-yellow-500',
     title: 'Strategic Recommendations',
     description: 'Receive AI-powered strategic recommendations and actionable insights to guide your business decisions and growth strategy.'
   },
   {
-    icon: 'fa-briefcase',
+    icon: 'fa-briefcase', 
     iconColor: 'text-purple-500',
     title: 'Custom Business Strategies',
     description: 'Get tailored strategies and frameworks for planning and execution, equipping you to bring your vision to life.'
   },
   {
-    icon: 'fa-globe',
+    icon: 'fa-globe', 
     iconColor: 'text-cyan-500',
     title: 'Website Analysis',
     description: 'Evaluate online presence and optimize digital strategy.'
   },
   {
-    icon: 'fa-robot',
+    icon: 'fa-robot', 
     iconColor: 'text-emerald-500',
     title: 'AI Business Consultant',
     description: 'Get AI-powered business advice and strategic guidance.'
   },
   {
-    icon: 'fa-file-powerpoint',
+    icon: 'fa-file-powerpoint', 
     iconColor: 'text-rose-500',
     title: 'Pitch Deck Generator',
     description: 'Create compelling investor presentations with AI assistance.'
   },
   {
-    icon: 'fa-file-export',
+    icon: 'fa-file-export', 
     iconColor: 'text-lime-600',
     title: 'Report Editing & Exporting',
     description: 'Customize and export professional market analysis reports.'
   },
   {
-    icon: 'fa-check-circle',
+    icon: 'fa-check-circle', 
     iconColor: 'text-green-600',
     title: 'Idea Viability Score',
     description: 'Get instant feedback on your business idea\'s potential.'
   },
   {
-    icon: 'fa-chess',
+    icon: 'fa-chess', 
     iconColor: 'text-amber-500',
     title: 'Competitive Analysis',
     description: 'Analyze competitors and identify market advantages.'
   }
 ];
 
+/**
+ * FeatureCard component represents a single feature card.
+ * 
+ * Props:
+ * - icon: Font Awesome icon class
+ * - iconColor: Tailwind color class for icon
+ * - title: Feature title
+ * - description: Feature description
+ */
 interface FeatureCardProps {
   icon: string;
   iconColor: string;
@@ -64,6 +81,9 @@ interface FeatureCardProps {
   description: string;
 }
 
+/**
+ * FeatureCard component implementation.
+ */
 const FeatureCard: React.FC<FeatureCardProps> = ({ 
   icon, 
   iconColor,
@@ -144,6 +164,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   </article>
 );
 
+/**
+ * Features component implementation.
+ */
 const Features = () => {
   return (
     <section 
