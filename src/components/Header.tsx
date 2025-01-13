@@ -14,7 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion';
  */
 const Header: React.FC = () => {
   // State to manage mobile menu and scroll status
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileNavigationMenuOpen, setIsMobileNavigationMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -65,9 +65,9 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Toggle mobile menu
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  // Toggle mobile navigation menu
+  const toggleMobileNavigationMenu = () => {
+    setIsMobileNavigationMenuOpen(!isMobileNavigationMenuOpen);
   };
 
   return (
@@ -113,7 +113,7 @@ const Header: React.FC = () => {
                 key={link.name}
                 onClick={() => {
                   link.onClick && link.onClick();
-                  setIsMobileMenuOpen(false);
+                  setIsMobileNavigationMenuOpen(false);
                 }}
                 className="text-gray-600 hover:text-custom font-medium transition-colors duration-300 relative group"
               >
@@ -149,15 +149,15 @@ const Header: React.FC = () => {
           <motion.button 
             whileTap={{ scale: 0.9 }}
             className="lg:hidden text-gray-600 hover:text-custom transition-colors duration-300"
-            onClick={toggleMobileMenu}
+            onClick={toggleMobileNavigationMenu}
           >
-            <i className={`fas ${isMobileMenuOpen ? 'fa-times' : 'fa-bars'} text-2xl`}></i>
+            <i className={`fas ${isMobileNavigationMenuOpen ? 'fa-times' : 'fa-bars'} text-2xl`}></i>
           </motion.button>
         </div>
 
         {/* Mobile Menu */}
         <AnimatePresence>
-          {isMobileMenuOpen && (
+          {isMobileNavigationMenuOpen && (
             <motion.div 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -171,7 +171,7 @@ const Header: React.FC = () => {
                     key={link.name}
                     onClick={() => {
                       link.onClick && link.onClick();
-                      setIsMobileMenuOpen(false);
+                      setIsMobileNavigationMenuOpen(false);
                     }}
                     className="block text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group"
                   >
