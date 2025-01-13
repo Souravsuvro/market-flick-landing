@@ -93,7 +93,10 @@ const Header: React.FC = () => {
             {navigationLinks.map((link) => (
               <button 
                 key={link.name}
-                onClick={link.onClick}
+                onClick={() => {
+                  link.onClick && link.onClick();
+                  setIsMobileMenuOpen(false);
+                }}
                 className="text-gray-600 hover:text-custom font-medium transition-colors duration-300 relative group"
               >
                 {link.name}
@@ -149,7 +152,7 @@ const Header: React.FC = () => {
                   <button 
                     key={link.name}
                     onClick={() => {
-                      link.onClick();
+                      link.onClick && link.onClick();
                       setIsMobileMenuOpen(false);
                     }}
                     className="block text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group"
