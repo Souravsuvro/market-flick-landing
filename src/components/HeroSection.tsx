@@ -178,12 +178,11 @@ const HeroSection: React.FC = () => {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-custom hover:text-white font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group"
+              className="relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-custom hover:text-custom font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group"
             >
-              <i className="fas fa-play-circle text-custom group-hover:text-white transition-colors duration-300"></i>
+              <i className="fas fa-play-circle text-custom"></i>
               <span>Live Demo</span>
               <span className="absolute inset-0 bg-custom transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0 opacity-10"></span>
-              <span className="absolute inset-0 bg-custom opacity-0 group-hover:opacity-10 transition-opacity duration-300 z-5"></span>
             </motion.button>
           </div>
         </nav>
