@@ -148,9 +148,11 @@ const Header: React.FC = () => {
                 {navigationLinks.map((link) => (
                   <button 
                     key={link.name}
-                    onClick={link.onClick}
+                    onClick={() => {
+                      link.onClick();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="block text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group"
-                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
                     <span className="block w-0 h-0.5 bg-custom transition-all duration-300 group-hover:w-full"></span>
