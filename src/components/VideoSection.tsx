@@ -80,7 +80,7 @@ const VideoSection: React.FC = () => {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-custom hover:bg-custom/90 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
+            className="bg-gray-200 hover:bg-gray-300 text-gray-900 font-bold px-8 py-3 rounded-full transition-all duration-300 flex items-center gap-2"
           >
             <i className="fas fa-play-circle text-green-500"></i>
             <span>Full Demo</span>
