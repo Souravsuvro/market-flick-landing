@@ -1,194 +1,247 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 /**
- * PasswordReset page allows users to reset their account password.
+ * UserPasswordResetPage component for password recovery.
  * 
  * Key Features:
- * - Email input for password reset
+ * - Email-based password reset
  * - Form validation
  * - Error handling
- * - Animated transitions
+ * - User feedback
  * - Responsive design
  */
-const PasswordReset: React.FC = () => {
-  // State management for form inputs and validation
-  const [email, setEmail] = useState('');
-  const [isEmailValid, setIsEmailValid] = useState(true);
-  const [resetError, setResetError] = useState('');
-  const navigate = useNavigate();
+const UserPasswordResetPage: React.FC = () => {
+  // Navigation hook
+  const navigateToPage = useNavigate();
 
-  // Email validation regex pattern
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  /**
-   * Validate email input
-   * @param {string} inputEmail - Email to validate
-   * @returns {boolean} - Whether email is valid
-   */
-  const validateEmail = (inputEmail: string) => {
-    return emailRegex.test(inputEmail);
-  };
-
-  /**
-   * Handle email input changes
-   * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
-   */
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputEmail = e.target.value;
-    setEmail(inputEmail);
-    setIsEmailValid(validateEmail(inputEmail));
-    setResetError('');
-  };
-
-  /**
-   * Submit password reset request
-   * @param {React.FormEvent} e - Form submission event
-   */
-  const handleResetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Reset previous errors
-    setResetError('');
-
-    // Validate email before submission
-    if (!validateEmail(email)) {
-      setIsEmailValid(false);
-      setResetError('Please enter a valid email address.');
-      return;
-    }
-
-    try {
-      // Simulated password reset request
-      // In a real app, this would be an API call
-      console.log('Password reset requested for:', email);
-      
-      // Show success message and redirect
-      navigate('/reset-confirmation', { 
-        state: { email: email } 
-      });
-    } catch (error) {
-      // Handle reset errors
-      setResetError('Unable to reset password. Please try again.');
-      console.error('Password reset error:', error);
-    }
-  };
+  // Password reset state management
+  const [userResetEmail, setUserResetEmail] = useState('');
+  const [passwordResetStatus, setPasswordResetStatus] = useState<{
+    type: 'idle' | 'processing' | 'success' | 'error';
+    message: string;
+  }>({
+    type: 'idle',
+    message: ''
+  });
 
   // Animation variants for page entrance
-  const pageVariants = {
-    initial: { opacity: 0, y: 50 },
-    in: { 
+  const pageAnimationVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
       opacity: 1, 
       y: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.6,
         ease: 'easeOut'
       }
-    },
-    out: { 
-      opacity: 0, 
-      y: -50,
+    }
+  };
+
+  // Animation variants for form elements
+  const formElementAnimationVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.5,
-        ease: 'easeIn'
+        type: 'spring',
+        damping: 12,
+        stiffness: 100
       }
+    }
+  };
+
+  // Handle email input changes
+  const handleResetEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserResetEmail(e.target.value);
+    // Reset status when user starts typing
+    if (passwordResetStatus.type !== 'idle') {
+      setPasswordResetStatus({ type: 'idle', message: '' });
+    }
+  };
+
+  // Validate email input
+  const validateResetEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Handle password reset request
+  const handlePasswordResetRequest = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Validate email
+    if (!validateResetEmail(userResetEmail)) {
+      setPasswordResetStatus({
+        type: 'error',
+        message: 'Please enter a valid email address'
+      });
+      return;
+    }
+
+    // Update status to processing
+    setPasswordResetStatus({
+      type: 'processing',
+      message: 'Sending password reset instructions...'
+    });
+
+    try {
+      // Simulated password reset logic
+      // Replace with actual password reset service
+      await new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // Simulate random success/failure
+          Math.random() > 0.2 
+            ? resolve(true) 
+            : reject(new Error('Password reset failed'));
+        }, 1500);
+      });
+
+      // Success scenario
+      setPasswordResetStatus({
+        type: 'success',
+        message: 'Password reset instructions sent to your email'
+      });
+
+      // Optional: Auto-redirect after success
+      setTimeout(() => {
+        navigateToPage('/signin');
+      }, 2500);
+
+    } catch (error) {
+      // Error scenario
+      setPasswordResetStatus({
+        type: 'error',
+        message: 'Unable to send password reset instructions. Please try again.'
+      });
     }
   };
 
   return (
-    // Full-page container with centered content
     <motion.div
-      initial="initial"
-      animate="in"
-      exit="out"
-      variants={pageVariants}
-      className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12"
+      variants={pageAnimationVariants}
+      initial="hidden"
+      animate="visible"
+      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white to-gray-50 px-4 py-12"
     >
-      {/* Password Reset Card */}
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
         {/* Page Header */}
-        <div className="text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+        <motion.div 
+          variants={formElementAnimationVariants}
+          className="text-center"
+        >
+          <h2 className="text-3xl font-extrabold text-gray-900">
             Reset Your Password
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Enter your email to receive a password reset link
+            Enter your email to receive password reset instructions
           </p>
-        </div>
+        </motion.div>
 
-        {/* Reset Form */}
-        <form 
-          onSubmit={handleResetPassword} 
-          className="mt-8 space-y-6"
+        {/* Password Reset Status Feedback */}
+        {passwordResetStatus.message && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`
+              px-4 py-3 rounded-lg text-center
+              ${passwordResetStatus.type === 'success' 
+                ? 'bg-green-50 border border-green-300 text-green-800'
+                : passwordResetStatus.type === 'error'
+                ? 'bg-red-50 border border-red-300 text-red-800'
+                : 'bg-blue-50 border border-blue-300 text-blue-800'
+              }
+            `}
+          >
+            {passwordResetStatus.message}
+          </motion.div>
+        )}
+
+        {/* Password Reset Form */}
+        <motion.form 
+          variants={formElementAnimationVariants}
+          onSubmit={handlePasswordResetRequest}
+          className="space-y-6"
         >
           {/* Email Input */}
           <div>
-            <label 
-              htmlFor="email" 
-              className="sr-only"
-            >
+            <label htmlFor="userResetEmail" className="sr-only">
               Email address
             </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={email}
-              onChange={handleEmailChange}
-              placeholder="Email address"
-              className={`
-                appearance-none rounded-md relative block w-full px-3 py-2 
-                border ${isEmailValid ? 'border-gray-300' : 'border-red-500'}
-                placeholder-gray-500 text-gray-900 
-                focus:outline-none focus:ring-custom focus:border-custom
-              `}
-            />
-            {/* Email Validation Error Message */}
-            {!isEmailValid && email && (
-              <p className="mt-2 text-sm text-red-600">
-                Please enter a valid email address
-              </p>
-            )}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i className="fas fa-envelope text-gray-400"></i>
+              </div>
+              <input
+                id="userResetEmail"
+                name="userResetEmail"
+                type="email"
+                required
+                value={userResetEmail}
+                onChange={handleResetEmailChange}
+                disabled={passwordResetStatus.type === 'processing' || passwordResetStatus.type === 'success'}
+                className={`
+                  appearance-none rounded-md relative block w-full px-3 py-3 pl-10 
+                  border border-gray-300 placeholder-gray-500 text-gray-900 
+                  focus:outline-none focus:ring-custom focus:border-custom focus:z-10 sm:text-sm
+                  ${passwordResetStatus.type === 'processing' || passwordResetStatus.type === 'success' 
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : ''
+                  }
+                `}
+                placeholder="Enter your email"
+              />
+            </div>
           </div>
 
-          {/* Reset Error Message */}
-          {resetError && (
-            <div className="text-center text-sm text-red-600">
-              {resetError}
-            </div>
-          )}
-
-          {/* Submit Button */}
+          {/* Reset Password Button */}
           <button
             type="submit"
-            disabled={!isEmailValid || !email}
+            disabled={
+              passwordResetStatus.type === 'processing' || 
+              passwordResetStatus.type === 'success'
+            }
             className={`
-              group relative w-full flex justify-center py-2 px-4 
-              border border-transparent text-sm font-medium rounded-md 
-              text-white bg-custom
-              ${(!isEmailValid || !email) 
-                ? 'opacity-50 cursor-not-allowed' 
-                : 'hover:bg-custom-dark focus:outline-none focus:ring-2 focus:ring-custom'}
+              group relative w-full flex justify-center py-3 px-4 border border-transparent 
+              text-sm font-medium rounded-md text-white 
+              ${passwordResetStatus.type === 'processing' 
+                ? 'bg-custom/50 cursor-not-allowed' 
+                : passwordResetStatus.type === 'success'
+                ? 'bg-green-500 cursor-not-allowed'
+                : 'bg-custom hover:bg-custom-dark'
+              } 
+              focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom
             `}
           >
-            Send Reset Link
+            {passwordResetStatus.type === 'processing'
+              ? 'Sending Instructions...'
+              : passwordResetStatus.type === 'success'
+              ? 'Instructions Sent'
+              : 'Reset Password'
+            }
           </button>
-        </form>
+        </motion.form>
 
-        {/* Navigation Links */}
-        <div className="text-center mt-6">
-          <Link 
-            to="/signin" 
-            className="font-medium text-custom hover:text-custom-dark"
-          >
-            Back to Sign In
-          </Link>
-        </div>
+        {/* Sign In Redirect */}
+        <motion.div 
+          variants={formElementAnimationVariants}
+          className="mt-6 text-center"
+        >
+          <p className="text-sm text-gray-600">
+            Remember your password?{' '}
+            <Link 
+              to="/signin" 
+              className="font-medium text-custom hover:text-custom-dark"
+            >
+              Sign in
+            </Link>
+          </p>
+        </motion.div>
       </div>
     </motion.div>
   );
 };
 
-export default PasswordReset;
+export default UserPasswordResetPage;
