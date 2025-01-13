@@ -284,9 +284,9 @@ const Pricing = () => {
                 <button 
                   aria-label={`Select ${plan.name} Plan`}
                   className={`
-                    w-full py-3 rounded-full font-medium transition-all duration-300
+                    w-full py-3 rounded-full text-gray-900 font-medium transition-all duration-300
                     ${plan.highlight 
-                      ? 'bg-custom text-white hover:bg-custom/90 shadow-lg' 
+                      ? 'bg-gray-200 text-gray-900 hover:bg-gray-300' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }
                   `}
