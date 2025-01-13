@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Features component showcases key product capabilities and unique selling points.
+ * DetailedFeaturesSection showcases key product capabilities and unique selling points.
  * 
  * Key Features:
  * - Grid layout of feature cards
@@ -10,7 +10,7 @@ import React from 'react';
  */
 const DetailedFeaturesSection: React.FC = () => {
   // Detailed feature list with comprehensive descriptions
-  const marketResearchFeatures: {
+  const marketResearchCapabilities: {
     icon: string;
     title: string;
     description: string;
@@ -18,55 +18,55 @@ const DetailedFeaturesSection: React.FC = () => {
   }[] = [
     {
       icon: 'fa-chart-line', 
-      title: '360-Degree Market Analysis',
+      title: 'Comprehensive Market Analysis',
       description: 'Assess your idea\'s viability with SWOT, PESTEL, and Porter\'s Five Forces evaluations, helping you prepare for challenges and seize opportunities.',
       color: 'text-blue-500'
     },
     {
       icon: 'fa-lightbulb', 
-      title: 'Strategic Recommendations',
+      title: 'Strategic Business Recommendations',
       description: 'Receive AI-powered strategic recommendations and actionable insights to guide your business decisions and growth strategy.',
       color: 'text-yellow-500'
     },
     {
       icon: 'fa-briefcase', 
-      title: 'Custom Business Strategies',
+      title: 'Customized Business Strategies',
       description: 'Get tailored strategies and frameworks for planning and execution, equipping you to bring your vision to life.',
       color: 'text-purple-500'
     },
     {
       icon: 'fa-globe', 
-      title: 'Website Analysis',
+      title: 'Website Analysis and Optimization',
       description: 'Evaluate online presence and optimize digital strategy.',
       color: 'text-cyan-500'
     },
     {
       icon: 'fa-robot', 
-      title: 'AI Business Consultant',
+      title: 'AI-Powered Business Consulting',
       description: 'Get AI-powered business advice and strategic guidance.',
       color: 'text-emerald-500'
     },
     {
       icon: 'fa-file-powerpoint', 
-      title: 'Pitch Deck Generator',
+      title: 'Pitch Deck Creation and Editing',
       description: 'Create compelling investor presentations with AI assistance.',
       color: 'text-rose-500'
     },
     {
       icon: 'fa-file-export', 
-      title: 'Report Editing & Exporting',
+      title: 'Report Editing and Exporting',
       description: 'Customize and export professional market analysis reports.',
       color: 'text-lime-600'
     },
     {
       icon: 'fa-check-circle', 
-      title: 'Idea Viability Score',
+      title: 'Idea Viability Assessment',
       description: 'Get instant feedback on your business idea\'s potential.',
       color: 'text-green-600'
     },
     {
       icon: 'fa-chess', 
-      title: 'Competitive Analysis',
+      title: 'Competitive Market Analysis',
       description: 'Analyze competitors and identify market advantages.',
       color: 'text-amber-500'
     }
@@ -181,7 +181,7 @@ const DetailedFeaturesSection: React.FC = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-2xl font-bold mb-4">
-            Discover What's Possible with Market Flick AI
+            Unlock Your Business Potential with Market Flick AI
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Turn your business idea into reality with tools offering in-depth analysis, 
@@ -191,13 +191,13 @@ const DetailedFeaturesSection: React.FC = () => {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {marketResearchFeatures.map((feature, index) => (
+          {marketResearchCapabilities.map((capability, index) => (
             <FeatureCard 
               key={index} 
-              icon={feature.icon} 
-              iconColor={feature.color}
-              title={feature.title} 
-              description={feature.description} 
+              icon={capability.icon} 
+              iconColor={capability.color}
+              title={capability.title} 
+              description={capability.description} 
             />
           ))}
         </div>
