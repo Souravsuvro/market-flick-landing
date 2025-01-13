@@ -2,182 +2,187 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 /**
- * FAQSection component displays frequently asked questions with expandable answers.
+ * ProductFrequentlyAskedQuestionsSection provides a comprehensive FAQ experience.
  * 
  * Key Features:
- * - Accordion-style FAQ list
- * - Animated expand/collapse with Framer Motion
- * - Responsive design using Tailwind CSS
- * - Support button for additional assistance
+ * - Expandable/collapsible FAQ items
+ * - Smooth animations for interactions
+ * - Categorized questions
+ * - Responsive design
+ * - Accessibility considerations
  */
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const FAQSection: React.FC = () => {
+const ProductFrequentlyAskedQuestionsSection: React.FC = () => {
   // State to track which FAQ item is currently expanded
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [expandedFaqItemId, setExpandedFaqItemId] = useState<number | null>(null);
 
-  // FAQ data with questions and answers
-  const faqData: FAQItem[] = [
+  // FAQ content configuration
+  const faqContentCategories = [
     {
-      question: "How does Market Flick's AI analyze market research?",
-      answer: "Our advanced AI algorithms process vast amounts of data from multiple sources, including market trends, consumer behavior, competitive landscape, and economic indicators to provide comprehensive, actionable insights."
+      category: 'Product Basics',
+      items: [
+        {
+          id: 1,
+          question: 'What is Market Flick?',
+          answer: 'Market Flick is an AI-powered market research platform that helps businesses gain actionable insights quickly and efficiently.'
+        },
+        {
+          id: 2,
+          question: 'How does the AI work?',
+          answer: 'Our advanced AI analyzes vast amounts of market data, identifying trends, patterns, and insights that would take humans weeks to uncover.'
+        }
+      ]
     },
     {
-      question: "Is my business data secure?",
-      answer: "Absolutely. We use bank-grade encryption and follow strict data protection protocols. Your business information is confidential and will never be shared without explicit consent."
+      category: 'Pricing and Plans',
+      items: [
+        {
+          id: 3,
+          question: 'Do you offer a free trial?',
+          answer: 'Yes! We offer a 14-day free trial with full access to all features. No credit card required.'
+        },
+        {
+          id: 4,
+          question: 'What payment methods do you accept?',
+          answer: 'We accept major credit cards (Visa, MasterCard, American Express) and PayPal.'
+        }
+      ]
     },
     {
-      question: "Can I customize the market research report?",
-      answer: "Yes! Our platform allows you to focus on specific industries, regions, and business parameters. You can generate tailored reports that match your unique business needs."
-    },
-    {
-      question: "How quickly can I get market insights?",
-      answer: "Our AI-powered platform generates comprehensive market research reports in minutes, compared to traditional methods that could take weeks or months."
-    },
-    {
-      question: "Do I need technical expertise to use Market Flick?",
-      answer: "Not at all. Our user-friendly interface is designed for entrepreneurs and business professionals of all technical backgrounds. Simply input your business idea, and our AI does the rest."
+      category: 'Technical Support',
+      items: [
+        {
+          id: 5,
+          question: 'Is my data secure?',
+          answer: 'Absolutely. We use bank-level encryption and follow strict data protection regulations to ensure your information remains confidential.'
+        },
+        {
+          id: 6,
+          question: 'What kind of support do you provide?',
+          answer: 'We offer 24/7 email support, live chat during business hours, and comprehensive documentation for self-service.'
+        }
+      ]
     }
   ];
 
-  // Animation variants for FAQ list entrance
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
+  // Toggle FAQ item expansion
+  const toggleFaqItemExpansion = (itemId: number) => {
+    setExpandedFaqItemId(prevExpandedId => 
+      prevExpandedId === itemId ? null : itemId
+    );
+  };
+
+  // Animation variants for FAQ items
+  const faqItemAnimationVariants = {
+    hidden: { 
+      opacity: 0, 
+      height: 0,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        duration: 0.3
+      }
+    },
+    visible: { 
+      opacity: 1, 
+      height: 'auto',
+      transition: {
+        duration: 0.3
       }
     }
   };
 
-  // Variants for individual FAQ items
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
+  // Animation variants for section entrance
+  const sectionEntranceAnimationVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 50 
+    },
+    visible: { 
+      opacity: 1, 
       y: 0,
-      opacity: 1,
       transition: {
-        type: "spring",
-        stiffness: 100
+        type: 'spring',
+        stiffness: 100,
+        damping: 15,
+        staggerChildren: 0.2
       }
     }
-  };
-
-  /**
-   * Toggle FAQ item expansion
-   * @param index - Index of the FAQ item to toggle
-   */
-  const toggleFAQ = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
   };
 
   return (
-    // FAQ section with responsive layout
     <section className="bg-gray-50 py-16 px-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Section header */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={sectionEntranceAnimationVariants}
+        className="max-w-4xl mx-auto"
+      >
+        {/* Section Title */}
+        <motion.h2 
+          variants={sectionEntranceAnimationVariants}
+          className="text-4xl font-bold text-center mb-12 text-gray-900"
         >
-          <motion.mark 
-            whileHover={{ scale: 1.05 }}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-custom/10 rounded-full mb-4"
-          >
-            <span className="text-custom font-semibold">FAQ</span>
-            <span className="text-gray-600 text-sm">Frequently Asked Questions</span>
-          </motion.mark>
-          
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
-            Got Questions? We've Got Answers
-          </h2>
-          
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Find quick answers to the most common questions about our AI-powered market research platform.
-          </p>
-        </motion.div>
+          Frequently Asked Questions
+        </motion.h2>
 
-        {/* FAQ List */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-4"
-        >
-          {faqData.map((faq, index) => (
-            <motion.div 
-              key={index}
-              variants={itemVariants}
-              className="bg-white border border-gray-200 rounded-xl overflow-hidden"
-            >
-              {/* FAQ Question Header */}
-              <button 
-                onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center p-6 text-left focus:outline-none"
+        {/* FAQ Categories */}
+        {faqContentCategories.map((faqCategory, categoryIndex) => (
+          <motion.div 
+            key={categoryIndex}
+            variants={sectionEntranceAnimationVariants}
+            className="mb-8"
+          >
+            <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+              {faqCategory.category}
+            </h3>
+
+            {/* FAQ Items */}
+            {faqCategory.items.map((faqItem) => (
+              <div 
+                key={faqItem.id}
+                className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
               >
-                <span className="text-lg font-medium text-gray-900">
-                  {faq.question}
-                </span>
-                <motion.i 
-                  animate={{ rotate: activeIndex === index ? 180 : 0 }}
-                  className={`fas fa-chevron-down text-custom transition-transform duration-300`}
-                />
-              </button>
+                {/* FAQ Question */}
+                <button
+                  onClick={() => toggleFaqItemExpansion(faqItem.id)}
+                  className="w-full text-left px-6 py-4 flex justify-between items-center 
+                    hover:bg-gray-100 transition-colors duration-300 focus:outline-none"
+                  aria-expanded={expandedFaqItemId === faqItem.id}
+                  aria-controls={`faq-answer-${faqItem.id}`}
+                >
+                  <span className="text-lg font-medium text-gray-900">
+                    {faqItem.question}
+                  </span>
+                  <i 
+                    className={`fas ${
+                      expandedFaqItemId === faqItem.id 
+                      ? 'fa-chevron-up' 
+                      : 'fa-chevron-down'
+                    } text-gray-600 transition-transform duration-300`}
+                  ></i>
+                </button>
 
-              {/* FAQ Answer with Animated Expansion */}
-              <AnimatePresence>
-                {activeIndex === index && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ 
-                      opacity: 1, 
-                      height: 'auto',
-                      transition: { duration: 0.3 }
-                    }}
-                    exit={{ 
-                      opacity: 0, 
-                      height: 0,
-                      transition: { duration: 0.2 }
-                    }}
-                    className="px-6 pb-6 text-gray-600"
-                  >
-                    {faq.answer}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Support Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <p className="text-gray-600 mb-4">
-            Didn't find the answer you were looking for?
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
-          >
-            <i className="fas fa-envelope text-green-500"></i>
-            Contact Support
-          </motion.button>
-        </motion.div>
-      </div>
+                {/* FAQ Answer */}
+                <AnimatePresence>
+                  {expandedFaqItemId === faqItem.id && (
+                    <motion.div
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={faqItemAnimationVariants}
+                      id={`faq-answer-${faqItem.id}`}
+                      className="px-6 pb-4 text-gray-700"
+                    >
+                      {faqItem.answer}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </motion.div>
+        ))}
+      </motion.div>
     </section>
   );
 };
 
-export default FAQSection;
+export default ProductFrequentlyAskedQuestionsSection;
