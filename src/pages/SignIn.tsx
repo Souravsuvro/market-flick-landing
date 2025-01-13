@@ -3,38 +3,37 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 /**
- * SignIn page allows users to authenticate and access their account.
+ * UserSignInPage component for user sign-in.
  * 
  * Key Features:
- * - Email and password input
+ * - Email and password authentication
+ * - Social login options
  * - Form validation
  * - Error handling
- * - Social login options
- * - Animated transitions
  * - Responsive design
  */
-const SignIn: React.FC = () => {
+const UserSignInPage: React.FC = () => {
   // State management for form inputs and validation
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [showUserPassword, setShowUserPassword] = useState(false);
+  const [rememberUser, setRememberUser] = useState(false);
   const navigate = useNavigate();
 
   /**
    * Handle email input changes
    * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
    */
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+  const handleUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(e.target.value);
   };
 
   /**
    * Handle password input changes
    * @param {React.ChangeEvent<HTMLInputElement>} e - Input change event
    */
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+  const handleUserPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserPassword(e.target.value);
   };
 
   /**
@@ -44,7 +43,7 @@ const SignIn: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement sign-in logic here
-    console.log('Sign In', { email, password, rememberMe });
+    console.log('Sign In', { userEmail, userPassword, rememberUser });
   };
 
   /**
@@ -108,7 +107,7 @@ const SignIn: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label 
-                htmlFor="email" 
+                htmlFor="userEmail" 
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Email address
@@ -119,9 +118,9 @@ const SignIn: React.FC = () => {
                 </div>
                 <input 
                   type="email" 
-                  id="email" 
-                  value={email}
-                  onChange={handleEmailChange}
+                  id="userEmail" 
+                  value={userEmail}
+                  onChange={handleUserEmailChange}
                   required
                   className="block w-full pl-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your email"
@@ -132,7 +131,7 @@ const SignIn: React.FC = () => {
             {/* Password Input */}
             <div>
               <label 
-                htmlFor="password" 
+                htmlFor="userPassword" 
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Password
@@ -142,20 +141,20 @@ const SignIn: React.FC = () => {
                   <i className="fas fa-lock text-gray-400"></i>
                 </div>
                 <input 
-                  type={showPassword ? "text" : "password"} 
-                  id="password" 
-                  value={password}
-                  onChange={handlePasswordChange}
+                  type={showUserPassword ? "text" : "password"} 
+                  id="userPassword" 
+                  value={userPassword}
+                  onChange={handleUserPasswordChange}
                   required
                   className="block w-full pl-10 pr-10 rounded-lg border-gray-300 focus:border-custom focus:ring focus:ring-custom focus:ring-opacity-50" 
                   placeholder="Enter your password"
                 />
                 <button 
                   type="button" 
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setShowUserPassword(!showUserPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
                 >
-                  <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} text-gray-400 hover:text-gray-600`}></i>
+                  <i className={`fas ${showUserPassword ? 'fa-eye-slash' : 'fa-eye'} text-gray-400 hover:text-gray-600`}></i>
                 </button>
               </div>
             </div>
@@ -165,13 +164,13 @@ const SignIn: React.FC = () => {
               <div className="flex items-center">
                 <input 
                   type="checkbox" 
-                  id="remember-me" 
-                  checked={rememberMe}
-                  onChange={() => setRememberMe(!rememberMe)}
+                  id="rememberUser" 
+                  checked={rememberUser}
+                  onChange={() => setRememberUser(!rememberUser)}
                   className="h-4 w-4 text-custom border-gray-300 rounded focus:ring-custom"
                 />
                 <label 
-                  htmlFor="remember-me" 
+                  htmlFor="rememberUser" 
                   className="ml-2 block text-sm text-gray-700"
                 >
                   Remember me
@@ -213,4 +212,4 @@ const SignIn: React.FC = () => {
   );
 };
 
-export default SignIn;
+export default UserSignInPage;
