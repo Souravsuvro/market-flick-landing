@@ -43,12 +43,12 @@ interface PricingPlan {
  * - Highlight for recommended plan
  * - Tailwind CSS for styling and responsiveness
  */
-const Pricing = () => {
+const PricingComponent = () => {
   // State to manage billing cycle (monthly/yearly)
-  const [isYearlyBilling, setIsYearlyBilling] = useState(false);
+  const [isYearlyBillingCycle, setIsYearlyBillingCycle] = useState(false);
 
   // Pricing plan details
-  const plans: PricingPlan[] = [
+  const pricingPlans: PricingPlan[] = [
     {
       name: 'Starter',
       price: 'Free',
@@ -259,22 +259,22 @@ const Pricing = () => {
         <nav aria-label="Billing Cycle Selection" className="flex justify-center mb-16">
           <div className="flex justify-center items-center space-x-4 mb-12">
             <span 
-              className={`text-sm font-medium ${!isYearlyBilling ? 'text-black' : 'text-gray-500'} cursor-pointer`}
-              onClick={() => setIsYearlyBilling(false)}
+              className={`text-sm font-medium ${!isYearlyBillingCycle ? 'text-black' : 'text-gray-500'} cursor-pointer`}
+              onClick={() => setIsYearlyBillingCycle(false)}
             >
               Monthly
             </span>
             <div 
               className="w-14 h-8 bg-gray-200 rounded-full relative cursor-pointer"
-              onClick={() => setIsYearlyBilling(!isYearlyBilling)}
+              onClick={() => setIsYearlyBillingCycle(!isYearlyBillingCycle)}
             >
               <div 
-                className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isYearlyBilling ? 'translate-x-full' : ''}`}
+                className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isYearlyBillingCycle ? 'translate-x-full' : ''}`}
               ></div>
             </div>
             <span 
-              className={`text-sm font-medium ${isYearlyBilling ? 'text-black' : 'text-gray-500'} cursor-pointer`}
-              onClick={() => setIsYearlyBilling(true)}
+              className={`text-sm font-medium ${isYearlyBillingCycle ? 'text-black' : 'text-gray-500'} cursor-pointer`}
+              onClick={() => setIsYearlyBillingCycle(true)}
             >
               Yearly
             </span>
@@ -286,7 +286,7 @@ const Pricing = () => {
           aria-label="Pricing Plans" 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {plans.map((plan, index) => (
+          {pricingPlans.map((plan, index) => (
             <section 
               key={index} 
               aria-labelledby={`plan-${plan.name}-title`}
@@ -314,7 +314,7 @@ const Pricing = () => {
                 <p className="text-3xl font-bold text-gray-900">
                   {plan.price}
                   <span className="text-sm text-gray-500 ml-2">
-                    {isYearlyBilling ? '/year' : '/month'}
+                    {isYearlyBillingCycle ? '/year' : '/month'}
                   </span>
                 </p>
               </header>
@@ -352,4 +352,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default PricingComponent;
