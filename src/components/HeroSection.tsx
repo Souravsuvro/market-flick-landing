@@ -13,9 +13,9 @@ import { motion } from 'framer-motion';
  */
 const HeroSection: React.FC = () => {
   // State variables for business idea, selected location, and animated text
-  const [businessIdea, setBusinessIdea] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [animatedText, setAnimatedText] = useState('');
+  const [businessConcept, setBusinessConcept] = useState('');
+  const [targetMarketLocation, setTargetMarketLocation] = useState('');
+  const [animatedTypingText, setAnimatedTypingText] = useState('');
 
   // Memoized array of placeholder texts for animated typing effect
   const placeholderTexts = useMemo(() => [
@@ -27,7 +27,7 @@ const HeroSection: React.FC = () => {
   ], []);
 
   // Animation variants for staggered entrance effects
-  const containerVariants = {
+  const containerAnimationVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
   };
 
   // Variants for individual elements to create smooth entrance animation
-  const itemVariants = {
+  const itemAnimationVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
@@ -64,10 +64,10 @@ const HeroSection: React.FC = () => {
 
       const fullText = placeholderTexts[currentIndex];
       const currentText = isDeleting 
-        ? fullText.slice(0, animatedText.length - 1) 
-        : fullText.slice(0, animatedText.length + 1);
+        ? fullText.slice(0, animatedTypingText.length - 1) 
+        : fullText.slice(0, animatedTypingText.length + 1);
 
-      setAnimatedText(currentText);
+      setAnimatedTypingText(currentText);
 
       if (!isDeleting && currentText === fullText) {
         setTimeout(() => { isDeleting = true; }, pauseTime);
@@ -84,12 +84,12 @@ const HeroSection: React.FC = () => {
     return () => {
       isMounted = false;
     };
-  }, [animatedText.length, placeholderTexts]);
+  }, [animatedTypingText.length, placeholderTexts]);
 
   // Function to handle market analysis
-  const handleAnalyzeMarket = () => {
+  const handleMarketAnalysis = () => {
     // Implement market analysis logic
-    console.log('Analyzing market for:', { businessIdea, selectedLocation });
+    console.log('Analyzing market for:', { businessConcept, targetMarketLocation });
   };
 
   return (
@@ -97,20 +97,20 @@ const HeroSection: React.FC = () => {
     <motion.section 
       initial="hidden"
       animate="visible"
-      variants={containerVariants}
+      variants={containerAnimationVariants}
       className="flex-grow mx-auto w-full max-w-7xl px-4 pt-32 pb-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center bg-white"
     >
       <motion.article 
-        variants={itemVariants}
+        variants={itemAnimationVariants}
         className="text-left mb-8 order-1 lg:order-2"
       >
         <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
           <div className="relative">
             <textarea 
               className="w-full h-40 p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-custom focus:border-custom resize-none shadow-sm transition-all duration-300 mb-4"
-              placeholder={`Enter your business idea (e.g., ${animatedText})`}
-              value={businessIdea}
-              onChange={(e) => setBusinessIdea(e.target.value)}
+              placeholder={`Enter your business concept (e.g., ${animatedTypingText})`}
+              value={businessConcept}
+              onChange={(e) => setBusinessConcept(e.target.value)}
             ></textarea>
           </div>
 
@@ -119,8 +119,8 @@ const HeroSection: React.FC = () => {
               <i className="fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-red-500"></i>
               <select 
                 className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 !rounded-xl appearance-none focus:ring-2 focus:ring-custom focus:border-custom shadow-sm transition-all duration-300"
-                value={selectedLocation}
-                onChange={(e) => setSelectedLocation(e.target.value)}
+                value={targetMarketLocation}
+                onChange={(e) => setTargetMarketLocation(e.target.value)}
               >
                 <option value="">Select Location</option>
                 <option value="us">United States</option>
@@ -138,7 +138,7 @@ const HeroSection: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="w-full rounded-xl bg-custom py-4 text-black font-semibold hover:bg-custom/90 flex items-center justify-center gap-3 transform transition-all duration-300 shadow-lg mt-6"
-            onClick={handleAnalyzeMarket}
+            onClick={handleMarketAnalysis}
           >
             <i className="fas fa-chart-line text-green-500"></i>
             Analyze Market
@@ -150,7 +150,7 @@ const HeroSection: React.FC = () => {
               <div>
                 <h3 className="font-medium text-gray-900 mb-2">How it works</h3>
                 <ol className="text-gray-600 space-y-2">
-                  <li>1. Enter your business idea or concept in detail</li>
+                  <li>1. Enter your business concept or idea in detail</li>
                   <li>2. Select your target market location</li>
                   <li>3. Click analyze to get comprehensive market insights</li>
                 </ol>
@@ -161,7 +161,7 @@ const HeroSection: React.FC = () => {
       </motion.article>
 
       <motion.article 
-        variants={itemVariants}
+        variants={itemAnimationVariants}
         className="text-left mb-8 order-2 lg:order-1"
       >
         <motion.mark 
@@ -196,7 +196,7 @@ const HeroSection: React.FC = () => {
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-custom hover:text-custom font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group"
+              className="relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group"
             >
               <i className="fas fa-play-circle text-custom"></i>
               <span>Live Demo</span>
