@@ -116,13 +116,34 @@ const HeroSection: React.FC = () => {
 
           <div className="hero-section__location-selector-wrapper relative">
             <div className="hero-section__location-selector-container relative">
-              <i className="hero-section__location-icon fas fa-map-marker-alt absolute left-4 top-1/2 -translate-y-1/2 text-red-500"></i>
+              <div className="hero-section__location-icon-wrapper absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <i className="hero-section__location-icon fas fa-globe-americas text-custom opacity-70"></i>
+              </div>
               <select 
-                className="hero-section__location-select w-full pl-10 pr-4 py-3 bg-white border border-gray-300 !rounded-xl appearance-none focus:ring-2 focus:ring-custom focus:border-custom shadow-sm transition-all duration-300"
+                className="hero-section__location-select 
+                  w-full 
+                  pl-10 
+                  pr-12 
+                  py-3 
+                  bg-white 
+                  border 
+                  border-gray-300 
+                  rounded-xl 
+                  appearance-none 
+                  focus:ring-2 
+                  focus:ring-custom 
+                  focus:border-custom 
+                  shadow-sm 
+                  transition-all 
+                  duration-300 
+                  text-gray-700 
+                  hover:border-custom 
+                  cursor-pointer"
                 value={targetMarketLocation}
                 onChange={(e) => setTargetMarketLocation(e.target.value)}
+                aria-label="Select target market location"
               >
-                <option value="">Select Location</option>
+                <option value="" disabled>Select Location</option>
                 <option value="us">United States</option>
                 <option value="uk">United Kingdom</option>
                 <option value="ca">Canada</option>
@@ -130,7 +151,20 @@ const HeroSection: React.FC = () => {
                 <option value="eu">European Union</option>
                 <option value="apac">Asia Pacific</option>
               </select>
-              <i className="hero-section__location-dropdown-icon fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-blue-500 pointer-events-none"></i>
+              <div className="hero-section__location-dropdown-icon-wrapper absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <motion.i 
+                  initial={{ rotate: 0 }}
+                  whileHover={{ rotate: 180 }}
+                  transition={{ duration: 0.3 }}
+                  className="hero-section__location-dropdown-icon 
+                    fas 
+                    fa-chevron-down 
+                    text-custom 
+                    opacity-70 
+                    transition-all 
+                    duration-300"
+                ></motion.i>
+              </div>
             </div>
           </div>
 
