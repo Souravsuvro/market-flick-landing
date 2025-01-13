@@ -48,10 +48,10 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-gray-900 text-white py-16 px-4">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Logo and Description */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
+        <div className="space-y-4 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2">
             <img 
               src="/logo.svg" 
               alt="Market Flick Logo" 
@@ -59,10 +59,10 @@ const Footer: React.FC = () => {
             />
             <h2 className="text-2xl font-bold text-white">Market Flick</h2>
           </div>
-          <p className="text-gray-400 text-sm">
+          <p className="text-gray-400 text-sm text-center md:text-left">
             AI-powered market research platform transforming business insights.
           </p>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 justify-center md:justify-start">
             {/* Social Media Icons */}
             {socialLinks.map((social) => (
               <a 
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
                 href={social.path}
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors text-xl"
               >
                 <i className={`fab ${social.icon}`}></i>
               </a>
@@ -78,46 +78,49 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        {/* Company Links */}
-        <div>
-          <h3 className="font-semibold mb-4">Company</h3>
-          {companyLinks.map((link) => (
-            <Link 
-              key={link.name}
-              to={link.path}
-              className="block text-gray-400 hover:text-white py-2 text-sm"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
+        {/* Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:col-span-3">
+          {/* Company Links */}
+          <div className="text-center md:text-left">
+            <h3 className="font-semibold mb-4">Company</h3>
+            {companyLinks.map((link) => (
+              <Link 
+                key={link.name}
+                to={link.path}
+                className="block text-gray-400 hover:text-white py-2 text-sm"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
 
-        {/* Product Links */}
-        <div>
-          <h3 className="font-semibold mb-4">Product</h3>
-          {productLinks.map((link) => (
-            <Link 
-              key={link.name}
-              to={link.path}
-              className="block text-gray-400 hover:text-white py-2 text-sm"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
+          {/* Product Links */}
+          <div className="text-center md:text-left">
+            <h3 className="font-semibold mb-4">Product</h3>
+            {productLinks.map((link) => (
+              <Link 
+                key={link.name}
+                to={link.path}
+                className="block text-gray-400 hover:text-white py-2 text-sm"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
 
-        {/* Resources Links */}
-        <div>
-          <h3 className="font-semibold mb-4">Resources</h3>
-          {resourceLinks.map((link) => (
-            <Link 
-              key={link.name}
-              to={link.path}
-              className="block text-gray-400 hover:text-white py-2 text-sm"
-            >
-              {link.name}
-            </Link>
-          ))}
+          {/* Resources Links */}
+          <div className="text-center md:text-left">
+            <h3 className="font-semibold mb-4">Resources</h3>
+            {resourceLinks.map((link) => (
+              <Link 
+                key={link.name}
+                to={link.path}
+                className="block text-gray-400 hover:text-white py-2 text-sm"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -126,12 +129,12 @@ const Footer: React.FC = () => {
         <p className="text-gray-500 text-sm">
           &copy; {currentYear} Market Flick. All rights reserved.
         </p>
-        <div className="mt-4 space-x-4">
+        <div className="mt-4 space-x-4 flex flex-wrap justify-center">
           {legalLinks.map((link) => (
             <Link 
               key={link.name}
               to={link.path}
-              className="text-gray-400 hover:text-white text-sm"
+              className="text-gray-400 hover:text-white text-sm mb-2"
             >
               {link.name}
             </Link>

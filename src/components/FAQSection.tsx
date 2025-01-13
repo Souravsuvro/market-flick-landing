@@ -146,7 +146,7 @@ const FAQSection: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="bg-custom hover:bg-custom/90 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
+            className="bg-gray-200 hover:bg-gray-300 text-gray-900 font-medium px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-3 mx-auto"
           >
             <i className="fas fa-envelope text-green-500"></i>
             Contact Support
