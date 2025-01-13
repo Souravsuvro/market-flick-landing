@@ -200,6 +200,7 @@ const Pricing = () => {
 
   return (
     <section 
+      id="pricing-section"
       aria-labelledby="pricing-title" 
       className="py-24 bg-gradient-to-b from-white to-gray-50"
     >

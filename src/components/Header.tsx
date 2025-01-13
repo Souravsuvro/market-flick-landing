@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const pricingRef = useRef<HTMLDivElement>(null);
+
+  const scrollToSection = (elementRef: React.RefObject<HTMLDivElement>) => {
+    elementRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -19,9 +27,29 @@ const Header: React.FC = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const navLinks = [
-    { name: 'Features', path: '/features' },
-    { name: 'Pricing', path: '/pricing' },
+  const navigationLinks = [
+    { 
+      name: 'Features', 
+      path: '/', 
+      onClick: () => {
+        navigate('/');
+        setTimeout(() => {
+          const featuresElement = document.getElementById('features-section');
+          featuresElement?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    },
+    { 
+      name: 'Pricing', 
+      path: '/', 
+      onClick: () => {
+        navigate('/');
+        setTimeout(() => {
+          const pricingElement = document.getElementById('pricing-section');
+          pricingElement?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    },
     { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' }
   ];
@@ -62,15 +90,15 @@ const Header: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="hidden lg:flex items-center space-x-6"
           >
-            {navLinks.map((link) => (
-              <Link 
+            {navigationLinks.map((link) => (
+              <button 
                 key={link.name}
-                to={link.path} 
+                onClick={link.onClick}
                 className="text-gray-600 hover:text-custom font-medium transition-colors duration-300 relative group"
               >
                 {link.name}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-custom transition-all duration-300 group-hover:w-full"></span>
-              </Link>
+              </button>
             ))}
           </motion.div>
 
@@ -117,16 +145,16 @@ const Header: React.FC = () => {
               className="lg:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg"
             >
               <div className="px-4 py-6 space-y-4">
-                {navLinks.map((link) => (
-                  <Link 
+                {navigationLinks.map((link) => (
+                  <button 
                     key={link.name}
-                    to={link.path}
+                    onClick={link.onClick}
                     className="block text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
                     <span className="block w-0 h-0.5 bg-custom transition-all duration-300 group-hover:w-full"></span>
-                  </Link>
+                  </button>
                 ))}
                 <div className="pt-4 border-t border-gray-200 space-y-3">
                   <button className="w-full text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group relative">

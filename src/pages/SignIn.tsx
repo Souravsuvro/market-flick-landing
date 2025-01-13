@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
 const SignIn: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,12 +133,13 @@ const SignIn: React.FC = () => {
                   Remember me
                 </label>
               </div>
-              <Link 
-                to="/password-reset" 
-                className="text-sm font-medium text-custom hover:text-custom-600"
+              <button 
+                type="button"
+                onClick={() => navigate('/password-reset')}
+                className="text-sm font-medium text-custom hover:text-custom/80"
               >
                 Forgot password?
-              </Link>
+              </button>
             </div>
 
             <motion.button 
@@ -153,12 +155,12 @@ const SignIn: React.FC = () => {
 
         <p className="mt-6 text-center text-gray-600">
           Don't have an account?{' '}
-          <Link 
-            to="/signup" 
-            className="font-medium text-custom hover:text-custom-600"
+          <button 
+            onClick={() => navigate('/signup')}
+            className="font-medium text-custom hover:text-custom/80"
           >
             Sign up
-          </Link>
+          </button>
         </p>
       </motion.div>
     </div>

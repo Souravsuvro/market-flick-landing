@@ -146,7 +146,11 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 
 const Features = () => {
   return (
-    <section aria-labelledby="features-title" className="py-24 bg-white">
+    <section 
+      id="features-section"
+      aria-labelledby="features-title" 
+      className="py-24 bg-white"
+    >
       <div className="max-w-6xl mx-auto px-4">
         <header className="text-center mb-16">
           <h2 
