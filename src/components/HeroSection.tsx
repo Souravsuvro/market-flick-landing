@@ -152,18 +152,42 @@ const HeroSection: React.FC = () => {
                 <option value="apac">Asia Pacific</option>
               </select>
               <div className="hero-section__location-dropdown-icon-wrapper absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <motion.i 
-                  initial={{ rotate: 0 }}
-                  whileHover={{ rotate: 180 }}
-                  transition={{ duration: 0.3 }}
-                  className="hero-section__location-dropdown-icon 
-                    fas 
-                    fa-chevron-down 
-                    text-custom 
-                    opacity-70 
+                <motion.div
+                  className="hero-section__location-dropdown-icon-container 
+                    w-10 
+                    h-10 
+                    flex 
+                    items-center 
+                    justify-center 
+                    rounded-full 
                     transition-all 
-                    duration-300"
-                ></motion.i>
+                    duration-300 
+                    group"
+                  initial={{ scale: 1, backgroundColor: 'transparent' }}
+                  whileHover={{ 
+                    scale: 1.1, 
+                    backgroundColor: 'rgba(var(--custom-rgb), 0.1)' 
+                  }}
+                  transition={{ 
+                    type: 'spring', 
+                    stiffness: 300, 
+                    damping: 10 
+                  }}
+                >
+                  <motion.i 
+                    className="hero-section__location-dropdown-icon"
+                    initial={{ rotate: 0, opacity: 0.6 }}
+                    whileHover={{ 
+                      rotate: 180, 
+                      opacity: 1 
+                    }}
+                    transition={{ 
+                      type: 'spring', 
+                      stiffness: 300, 
+                      damping: 15 
+                    }}
+                  ></motion.i>
+                </motion.div>
               </div>
             </div>
           </div>
@@ -223,18 +247,42 @@ const HeroSection: React.FC = () => {
               className="hero-section__primary-cta-button relative overflow-hidden bg-custom hover:bg-custom/90 text-black font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl group"
             >
               <span className="hero-section__primary-cta-text">Start for free</span>
-              <i className="hero-section__primary-cta-icon fas fa-arrow-right text-white transition-transform duration-300 group-hover:translate-x-1"></i>
+              <i className="hero-section__primary-cta-icon fas fa-arrow-right text-black transition-transform duration-300 group-hover:translate-x-1"></i>
               <span className="hero-section__primary-cta-overlay absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
             </motion.button>
             
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="hero-section__secondary-cta-button relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group"
+              className="hero-section__secondary-cta-button relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group rounded-full px-6 py-3"
             >
-              <i className="hero-section__secondary-cta-icon fas fa-play-circle text-custom"></i>
-              <span className="hero-section__secondary-cta-text">Live Demo</span>
-              <span className="hero-section__secondary-cta-hover-overlay absolute inset-0 bg-custom transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0 opacity-10"></span>
+              <div className="hero-section__secondary-cta-icon-wrapper flex items-center justify-center relative">
+                <motion.div
+                  className="hero-section__secondary-cta-icon-background absolute inset-0 bg-custom opacity-0 group-hover:opacity-10 rounded-full transition-opacity duration-300"
+                  initial={{ scale: 0.8 }}
+                  whileHover={{ scale: 1 }}
+                ></motion.div>
+                <motion.svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24" 
+                  className="hero-section__secondary-cta-icon relative z-10 w-6 h-6 text-custom transition-transform duration-300 group-hover:scale-110"
+                  initial={{ rotate: 0 }}
+                  whileHover={{ rotate: 360 }}
+                >
+                  <path 
+                    fill="currentColor" 
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14V8l6 4-6 4z"
+                  />
+                </motion.svg>
+              </div>
+              <span className="hero-section__secondary-cta-text ml-2 font-medium transition-colors duration-300 group-hover:text-opacity-80">
+                Live Demo
+              </span>
+              <motion.div 
+                className="hero-section__secondary-cta-hover-effect absolute bottom-0 left-0 w-full h-1 bg-custom origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+              ></motion.div>
             </motion.button>
           </div>
         </nav>

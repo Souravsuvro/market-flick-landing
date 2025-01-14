@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
  * Key Features:
  * - Expandable/collapsible FAQ items
  * - Smooth animations for interactions
- * - Categorized questions
  * - Responsive design
  * - Accessibility considerations
  */
@@ -16,51 +15,36 @@ const ProductFrequentlyAskedQuestionsSection: React.FC = () => {
   const [expandedFaqItemId, setExpandedFaqItemId] = useState<number | null>(null);
 
   // FAQ content configuration
-  const faqContentCategories = [
+  const faqItems = [
     {
-      category: 'Product Basics',
-      items: [
-        {
-          id: 1,
-          question: 'What is Market Flick?',
-          answer: 'Market Flick is an AI-powered market research platform that helps businesses gain actionable insights quickly and efficiently.'
-        },
-        {
-          id: 2,
-          question: 'How does the AI work?',
-          answer: 'Our advanced AI analyzes vast amounts of market data, identifying trends, patterns, and insights that would take humans weeks to uncover.'
-        }
-      ]
+      id: 1,
+      question: 'What is Market Flick?',
+      answer: 'Market Flick is an AI-powered market research platform that helps businesses gain actionable insights quickly and efficiently.'
     },
     {
-      category: 'Pricing and Plans',
-      items: [
-        {
-          id: 3,
-          question: 'Do you offer a free trial?',
-          answer: 'Yes! We offer a 14-day free trial with full access to all features. No credit card required.'
-        },
-        {
-          id: 4,
-          question: 'What payment methods do you accept?',
-          answer: 'We accept major credit cards (Visa, MasterCard, American Express) and PayPal.'
-        }
-      ]
+      id: 2,
+      question: 'How does the AI work?',
+      answer: 'Our advanced AI analyzes vast amounts of market data, identifying trends, patterns, and insights that would take humans weeks to uncover.'
     },
     {
-      category: 'Technical Support',
-      items: [
-        {
-          id: 5,
-          question: 'Is my data secure?',
-          answer: 'Absolutely. We use bank-level encryption and follow strict data protection regulations to ensure your information remains confidential.'
-        },
-        {
-          id: 6,
-          question: 'What kind of support do you provide?',
-          answer: 'We offer 24/7 email support, live chat during business hours, and comprehensive documentation for self-service.'
-        }
-      ]
+      id: 3,
+      question: 'Do you offer a free trial?',
+      answer: 'Yes! We offer a 14-day free trial with full access to all features. No credit card required.'
+    },
+    {
+      id: 4,
+      question: 'What payment methods do you accept?',
+      answer: 'We accept major credit cards (Visa, MasterCard, American Express) and PayPal.'
+    },
+    {
+      id: 5,
+      question: 'Is my data secure?',
+      answer: 'Absolutely. We use bank-level encryption and follow strict data protection regulations to ensure your information remains confidential.'
+    },
+    {
+      id: 6,
+      question: 'What kind of support do you provide?',
+      answer: 'We offer 24/7 email support, live chat during business hours, and comprehensive documentation for self-service.'
     }
   ];
 
@@ -124,61 +108,48 @@ const ProductFrequentlyAskedQuestionsSection: React.FC = () => {
           Frequently Asked Questions
         </motion.h2>
 
-        {/* FAQ Categories */}
-        {faqContentCategories.map((faqCategory, categoryIndex) => (
-          <motion.div 
-            key={categoryIndex}
-            variants={sectionEntranceAnimationVariants}
-            className="mb-8"
+        {/* FAQ Items */}
+        {faqItems.map((faqItem) => (
+          <div 
+            key={faqItem.id}
+            className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
           >
-            <h3 className="text-2xl font-semibold text-gray-800 mb-6">
-              {faqCategory.category}
-            </h3>
+            {/* FAQ Question */}
+            <button
+              onClick={() => toggleFaqItemExpansion(faqItem.id)}
+              className="w-full text-left px-6 py-4 flex justify-between items-center 
+                hover:bg-gray-100 transition-colors duration-300 focus:outline-none"
+              aria-expanded={expandedFaqItemId === faqItem.id}
+              aria-controls={`faq-answer-${faqItem.id}`}
+            >
+              <span className="text-lg font-medium text-gray-900">
+                {faqItem.question}
+              </span>
+              <i 
+                className={`fas ${
+                  expandedFaqItemId === faqItem.id 
+                  ? 'fa-chevron-up' 
+                  : 'fa-chevron-down'
+                } text-gray-600 transition-transform duration-300`}
+              ></i>
+            </button>
 
-            {/* FAQ Items */}
-            {faqCategory.items.map((faqItem) => (
-              <div 
-                key={faqItem.id}
-                className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
-              >
-                {/* FAQ Question */}
-                <button
-                  onClick={() => toggleFaqItemExpansion(faqItem.id)}
-                  className="w-full text-left px-6 py-4 flex justify-between items-center 
-                    hover:bg-gray-100 transition-colors duration-300 focus:outline-none"
-                  aria-expanded={expandedFaqItemId === faqItem.id}
-                  aria-controls={`faq-answer-${faqItem.id}`}
+            {/* FAQ Answer */}
+            <AnimatePresence>
+              {expandedFaqItemId === faqItem.id && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={faqItemAnimationVariants}
+                  id={`faq-answer-${faqItem.id}`}
+                  className="px-6 pb-4 text-gray-700"
                 >
-                  <span className="text-lg font-medium text-gray-900">
-                    {faqItem.question}
-                  </span>
-                  <i 
-                    className={`fas ${
-                      expandedFaqItemId === faqItem.id 
-                      ? 'fa-chevron-up' 
-                      : 'fa-chevron-down'
-                    } text-gray-600 transition-transform duration-300`}
-                  ></i>
-                </button>
-
-                {/* FAQ Answer */}
-                <AnimatePresence>
-                  {expandedFaqItemId === faqItem.id && (
-                    <motion.div
-                      initial="hidden"
-                      animate="visible"
-                      exit="hidden"
-                      variants={faqItemAnimationVariants}
-                      id={`faq-answer-${faqItem.id}`}
-                      className="px-6 pb-4 text-gray-700"
-                    >
-                      {faqItem.answer}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </motion.div>
+                  {faqItem.answer}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         ))}
       </motion.div>
     </section>
