@@ -66,7 +66,7 @@ const ProductVideoSection: React.FC = () => {
       variants={sectionContainerAnimationVariants}
       className="py-24 bg-gradient-to-b from-gray-50 to-white"
     >
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div 
           variants={sectionElementAnimationVariants}
@@ -84,12 +84,12 @@ const ProductVideoSection: React.FC = () => {
         {/* Video and Highlights Container */}
         <motion.div
           variants={sectionContainerAnimationVariants}
-          className="grid lg:grid-cols-2 gap-16 items-center"
+          className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center"
         >
           {/* Video Embed Column */}
           <motion.div 
             variants={sectionElementAnimationVariants}
-            className="relative rounded-xl overflow-hidden shadow-xl"
+            className="relative rounded-xl overflow-hidden shadow-xl bg-white"
           >
             <div className="aspect-w-16 aspect-h-9">
               <iframe 
@@ -100,22 +100,24 @@ const ProductVideoSection: React.FC = () => {
                 className="absolute inset-0 w-full h-full"
               ></iframe>
             </div>
+            <div className="absolute inset-0 bg-indigo-500/10 pointer-events-none"></div>
           </motion.div>
 
           {/* Product Highlights Column */}
           <motion.div 
             variants={sectionElementAnimationVariants}
-            className="space-y-8"
+            className="space-y-6"
           >
             {productCapabilityHighlights.map((highlight, index) => (
-              <div 
-                key={index} 
-                className="flex items-center space-x-6 bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+              <motion.div 
+                key={index}
+                whileHover={{ scale: 1.02 }}
+                className="flex items-start space-x-6 bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 hover:border-indigo-200"
               >
-                <div className="text-4xl text-custom">
-                  <i className={`fas ${highlight.icon}`}></i>
+                <div className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-lg bg-indigo-50 text-indigo-500">
+                  <i className={`fas ${highlight.icon} text-xl`}></i>
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
                     {highlight.title}
                   </h3>
@@ -123,7 +125,7 @@ const ProductVideoSection: React.FC = () => {
                     {highlight.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </motion.div>

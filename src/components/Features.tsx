@@ -99,7 +99,7 @@ const DetailedFeaturesSection: React.FC = () => {
   }) => (
     <article 
       className="
-        p-6 bg-white rounded-xl 
+        p-4 sm:p-5 md:p-6 bg-white rounded-lg sm:rounded-xl 
         border border-gray-200 
         hover:border-custom/30 
         hover:shadow-2xl 
@@ -120,51 +120,13 @@ const DetailedFeaturesSection: React.FC = () => {
         "
       />
       <div className="relative z-10">
-        <figure 
-          className="
-            w-12 h-12 
-            bg-custom/10 
-            rounded-lg 
-            flex items-center 
-            justify-center 
-            mb-4 
-            group-hover:bg-custom/20 
-            transition-colors 
-            duration-300
-          "
-        >
-          <i 
-            className={`
-              fas ${icon} 
-              text-xl 
-              ${iconColor}
-              group-hover:text-custom/80 
-              transition-colors 
-              duration-300
-            `}
-          ></i>
-        </figure>
-        <h3 
-          className="
-            text-xl 
-            font-semibold 
-            mb-3 
-            text-gray-900 
-            group-hover:text-custom 
-            transition-colors 
-            duration-300
-          "
-        >
+        <div className="flex items-center mb-4">
+          <i className={`fas ${icon} ${iconColor} text-2xl sm:text-3xl`}></i>
+        </div>
+        <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-gray-900">
           {title}
         </h3>
-        <p 
-          className="
-            text-gray-600 
-            group-hover:text-gray-800 
-            transition-colors 
-            duration-300
-          "
-        >
+        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
           {description}
         </p>
       </div>
@@ -172,32 +134,25 @@ const DetailedFeaturesSection: React.FC = () => {
   );
 
   return (
-    // Features section with gradient background
-    <section 
-      id="features-section"
-      className="py-24 bg-white"
-    >
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-2xl font-bold mb-4">
-            Unlock Your Business Potential with Market Flick AI
+    <section className="features-section py-12 sm:py-16 md:py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+            Market Research Capabilities
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Turn your business idea into reality with tools offering in-depth analysis, 
-            strategic guidance, and actionable insights.
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+            Unlock the power of AI-driven market research with our comprehensive suite of tools and features
           </p>
         </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {marketResearchCapabilities.map((capability, index) => (
-            <FeatureCard 
-              key={index} 
-              icon={capability.icon} 
-              iconColor={capability.color}
-              title={capability.title} 
-              description={capability.description} 
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+          {marketResearchCapabilities.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              iconColor={feature.color}
+              title={feature.title}
+              description={feature.description}
             />
           ))}
         </div>

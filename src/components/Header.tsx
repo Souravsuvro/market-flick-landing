@@ -1,205 +1,165 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-/**
- * Header component provides site-wide navigation and responsive mobile menu.
- * 
- * Key Features:
- * - Fixed top navigation bar
- * - Responsive design with mobile menu
- * - Scroll-based styling changes
- * - Animated menu transitions
- * - Dynamic navigation links
- */
-const Header: React.FC = () => {
-  // State to manage mobile menu and scroll status
-  const [isMobileNavigationMenuOpen, setIsMobileNavigationMenuOpen] = useState(false);
+interface HeaderProps {
+  isChatOpen?: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isChatOpen = false }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const featuresRef = useRef<HTMLDivElement>(null);
-  const pricingRef = useRef<HTMLDivElement>(null);
 
-  // Function to scroll to a specific section
-  const scrollToSection = (elementRef: React.RefObject<HTMLDivElement>) => {
-    elementRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // Navigation links configuration
-  const navigationLinks = [
-    { 
-      name: 'Features', 
-      path: '/', 
-      onClick: () => {
-        navigate('/');
-        setTimeout(() => {
-          const featuresElement = document.getElementById('features-section');
-          featuresElement?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-    },
-    { 
-      name: 'Pricing', 
-      path: '/', 
-      onClick: () => {
-        navigate('/');
-        setTimeout(() => {
-          const pricingElement = document.getElementById('pricing-section');
-          pricingElement?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-    },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Contact', path: '/contact' }
-  ];
-
-  // Effect to handle scroll-based styling
   useEffect(() => {
     const handleScroll = () => {
-      // Change header style when scrolled past top
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 10);
     };
-
-    // Add and remove scroll event listener
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Toggle mobile navigation menu
-  const toggleMobileNavigationMenu = () => {
-    setIsMobileNavigationMenuOpen(!isMobileNavigationMenuOpen);
-  };
+  const navigationItems = [
+    { 
+      name: 'Features', 
+      icon: 'fa-bolt', 
+      onClick: () => navigate('/features')
+    },
+    { 
+      name: 'Pricing', 
+      icon: 'fa-tags', 
+      onClick: () => navigate('/pricing')
+    },
+    { 
+      name: 'Resources', 
+      icon: 'fa-book', 
+      href: '/resources' 
+    }
+  ];
 
   return (
-    // Fixed header with dynamic background and shadow
-    <header 
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-md shadow-md' 
-          : 'bg-transparent'
+    <motion.header 
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
       }`}
+      animate={{
+        width: isChatOpen ? 'calc(100% - 380px)' : '100%'
+      }}
+      transition={{ type: "spring", damping: 25, stiffness: 200 }}
     >
-      {/* Main navigation container */}
-      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo and Brand */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="relative flex items-center justify-between">
+          {/* Logo */}
           <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            className="flex-shrink-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center"
           >
-            <Link to="/" className="flex items-center group">
+            <Link to="/" className="flex items-center gap-2">
               <img 
-                className="h-10 w-auto transition-transform duration-300 group-hover:rotate-6" 
-                src="/market_flick_logo.jpg" 
-                alt="Market Flick AI"
+                src="/market_flick_round_logo.jpg" 
+                alt="Market Flick Logo" 
+                className="h-8 w-auto"
               />
-              <span className="ml-3 text-2xl font-sans serif font-bold text-gray-900 tracking-tight transition-colors duration-300 group-hover:text-custom">
-                MARKET FLICK AI
-              </span>
+              <span className="text-xl font-bold text-gray-900">MarketFlick</span>
             </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            className={`hidden md:flex items-center space-x-8 ${isChatOpen ? 'md:hidden' : ''}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="hidden lg:flex items-center space-x-6"
           >
-            {navigationLinks.map((link) => (
-              <button 
-                key={link.name}
-                onClick={() => {
-                  link.onClick && link.onClick();
-                  setIsMobileNavigationMenuOpen(false);
-                }}
-                className="text-gray-600 hover:text-custom font-medium transition-colors duration-300 relative group"
+            {navigationItems.map((item, index) => (
+              <Link
+                key={index}
+                to={item.href || '#'}
+                className="text-base font-medium text-gray-600 hover:text-indigo-600 transition-colors duration-200"
               >
-                {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-custom transition-all duration-300 group-hover:w-full"></span>
-              </button>
+                <i className={`fas ${item.icon} mr-2 text-indigo-500 group-hover:text-indigo-600`}></i>
+                {item.name}
+              </Link>
             ))}
+            
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Link
+                to="/signin"
+                className="text-gray-700 hover:text-indigo-500 px-3 py-2 text-sm lg:text-base font-medium rounded-md hover:bg-indigo-50 transition-all duration-200"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/signup"
+                className="bg-indigo-500 text-white px-4 py-2 text-sm lg:text-base font-medium rounded-md hover:bg-indigo-600 transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                Get Started
+              </Link>
+            </div>
           </motion.div>
 
-          {/* Desktop Buttons */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="hidden lg:flex items-center space-x-4"
+          {/* Mobile Menu Button */}
+          <motion.button
+            className={`md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 ${isChatOpen ? 'hidden' : ''}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            whileTap={{ scale: 0.95 }}
           >
-            <button className="text-gray-600 hover:text-custom font-medium transition-colors duration-300 group relative">
-              Sign In
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-custom transition-all duration-300 group-hover:w-full"></span>
-            </button>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative overflow-hidden bg-transparent border-2 border-black text-black font-semibold px-8 py-2.5 rounded-full transition-all duration-300 group"
-            >
-              <span className="relative z-10 text-black group-hover:text-white transition-colors duration-300">Live Demo</span>
-              <span className="absolute inset-0 bg-black transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0"></span>
-              <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
-            </motion.button>
-          </motion.div>
-
-          {/* Mobile Menu Toggle */}
-          <motion.button 
-            whileTap={{ scale: 0.9 }}
-            className="lg:hidden text-gray-600 hover:text-custom transition-colors duration-300"
-            onClick={toggleMobileNavigationMenu}
-          >
-            <i className={`fas ${isMobileNavigationMenuOpen ? 'fa-times' : 'fa-bars'} text-2xl`}></i>
+            <span className="sr-only">Open main menu</span>
+            {isMobileMenuOpen ? (
+              <i className="fas fa-times text-xl"></i>
+            ) : (
+              <i className="fas fa-bars text-xl"></i>
+            )}
           </motion.button>
-        </div>
+        </nav>
 
         {/* Mobile Menu */}
         <AnimatePresence>
-          {isMobileNavigationMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="lg:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg"
+          {isMobileMenuOpen && !isChatOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden"
             >
-              <div className="px-4 py-6 space-y-4">
-                {navigationLinks.map((link) => (
-                  <button 
-                    key={link.name}
-                    onClick={() => {
-                      link.onClick && link.onClick();
-                      setIsMobileNavigationMenuOpen(false);
-                    }}
-                    className="block text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group"
+              <div className="px-2 pt-2 pb-3 space-y-1 bg-white rounded-lg mt-2 shadow-lg">
+                {navigationItems.map((item, index) => (
+                  <Link
+                    key={index}
+                    to={item.href || '#'}
+                    className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50 transition-colors duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {link.name}
-                    <span className="block w-0 h-0.5 bg-custom transition-all duration-300 group-hover:w-full"></span>
-                  </button>
+                    <i className={`fas ${item.icon} mr-2 text-indigo-500 group-hover:text-indigo-600`}></i>
+                    {item.name}
+                  </Link>
                 ))}
-                <div className="pt-4 border-t border-gray-200 space-y-3">
-                  <button className="w-full text-gray-700 hover:bg-gray-50 hover:text-custom font-medium px-4 py-3 rounded-lg transition-all duration-300 group relative">
-                    Sign In
-                    <span className="block w-0 h-0.5 bg-custom absolute bottom-0 left-0 transition-all duration-300 group-hover:w-full"></span>
-                  </button>
-                  <motion.button 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative overflow-hidden w-full bg-transparent border-2 border-black text-black font-semibold px-8 py-2.5 rounded-lg transition-all duration-300 group"
+                
+                <div className="flex items-center space-x-2 sm:space-x-4">
+                  <Link
+                    to="/signin"
+                    className="block w-full text-center px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-indigo-600 hover:bg-gray-50 transition-all duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <span className="relative z-10 text-black group-hover:text-white transition-colors duration-300">Live Demo</span>
-                    <span className="absolute inset-0 bg-black transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-in-out z-0"></span>
-                    <span className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
-                  </motion.button>
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="block w-full text-center px-3 py-2 rounded-md text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition-all duration-200"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Get Started
+                  </Link>
                 </div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
-    </header>
+      </div>
+    </motion.header>
   );
 };
 

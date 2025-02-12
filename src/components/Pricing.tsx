@@ -245,7 +245,7 @@ const PricingComponent = () => {
         <header className="text-center mb-16">
           <h2 
             id="pricing-title" 
-            className="text-4xl font-bold mb-6 text-gray-900"
+            className="text-4xl font-bold mb-6 text-gray-700"
           >
             Simple, Transparent Pricing
           </h2>
@@ -293,50 +293,57 @@ const PricingComponent = () => {
               className={`
                 bg-white border rounded-2xl p-6 
                 shadow-lg transition-all duration-300
-                hover:shadow-2xl hover:border-custom/30
+                hover:shadow-2xl 
                 ${plan.highlight 
-                  ? 'border-custom/50 scale-105' 
-                  : 'border-gray-200'
+                  ? 'border-indigo-500 scale-105 relative before:absolute before:inset-0 before:border-2 before:border-indigo-500 before:rounded-2xl before:-m-0.5' 
+                  : 'border-gray-200 hover:border-indigo-200'
                 }
               `}
             >
-              {/* Plan header */}
-              <header className="mb-6">
+              {plan.highlight && (
+                <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                  Most Popular
+                </span>
+              )}
+
+              <div className="mb-6">
                 <h3 
-                  id={`plan-${plan.name}-title`} 
-                  className="text-xl font-semibold mb-2 text-gray-900"
+                  id={`plan-${plan.name}-title`}
+                  className="text-2xl font-bold text-gray-900 mb-2"
                 >
                   {plan.name}
                 </h3>
-                <p className="text-sm text-gray-600 mb-3">
+                <p className="text-gray-600 mb-4">
                   {plan.description}
                 </p>
-                <p className="text-3xl font-bold text-gray-900">
-                  {plan.price}
-                  <span className="text-sm text-gray-500 ml-2">
-                    {isYearlyBillingCycle ? '/year' : '/month'}
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-bold text-gray-900">
+                    {isYearlyBillingCycle && plan.price !== 'Free' && plan.price !== 'Custom'
+                      ? `$${(parseFloat(plan.price.replace('$', '')) * 10).toFixed(2)}`
+                      : plan.price
+                    }
                   </span>
-                </p>
-              </header>
+                  {plan.price !== 'Free' && plan.price !== 'Custom' && (
+                    <span className="text-gray-600">
+                      /{isYearlyBillingCycle ? 'year' : 'month'}
+                    </span>
+                  )}
+                </div>
+              </div>
 
-              {/* Plan features */}
               {renderPlanFeatures(plan.features)}
 
-              {/* Select plan button */}
-              <footer>
-                <button 
-                  aria-label={`Select ${plan.name} Plan`}
-                  className={`
-                    w-full py-3 rounded-full text-gray-900 font-medium transition-all duration-300
-                    ${plan.highlight 
-                      ? 'bg-gray-200 text-gray-900 hover:bg-gray-300' 
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }
-                  `}
-                >
-                  {plan.buttonText}
-                </button>
-              </footer>
+              <button
+                className={`
+                  w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200
+                  ${plan.highlight
+                    ? 'bg-indigo-500 text-white hover:bg-indigo-600 shadow-md hover:shadow-lg'
+                    : 'bg-white text-indigo-500 border-2 border-indigo-500 hover:bg-indigo-50'
+                  }
+                `}
+              >
+                {plan.buttonText}
+              </button>
             </section>
           ))}
         </article>

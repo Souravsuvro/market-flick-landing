@@ -1,159 +1,134 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-/**
- * ProductFrequentlyAskedQuestionsSection provides a comprehensive FAQ experience.
- * 
- * Key Features:
- * - Expandable/collapsible FAQ items
- * - Smooth animations for interactions
- * - Responsive design
- * - Accessibility considerations
- */
-const ProductFrequentlyAskedQuestionsSection: React.FC = () => {
-  // State to track which FAQ item is currently expanded
-  const [expandedFaqItemId, setExpandedFaqItemId] = useState<number | null>(null);
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
-  // FAQ content configuration
-  const faqItems = [
+const FAQSection: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqItems: FAQItem[] = [
     {
-      id: 1,
-      question: 'What is Market Flick?',
-      answer: 'Market Flick is an AI-powered market research platform that helps businesses gain actionable insights quickly and efficiently.'
+      question: "What is Market Flick and how does it work?",
+      answer: "Market Flick is an AI-powered market research platform that helps entrepreneurs and businesses analyze market opportunities. It uses advanced algorithms to process market data, competitor information, and consumer trends to provide actionable insights for your business idea."
     },
     {
-      id: 2,
-      question: 'How does the AI work?',
-      answer: 'Our advanced AI analyzes vast amounts of market data, identifying trends, patterns, and insights that would take humans weeks to uncover.'
+      question: "How accurate are the market insights?",
+      answer: "Our market insights are based on real-time data from reliable sources and are continuously updated. The AI analyzes multiple data points to ensure accuracy, though we recommend using the insights as part of a comprehensive decision-making process."
     },
     {
-      id: 3,
-      question: 'Do you offer a free trial?',
-      answer: 'Yes! We offer a 14-day free trial with full access to all features. No credit card required.'
+      question: "Can I analyze multiple markets simultaneously?",
+      answer: "Yes, Market Flick allows you to analyze and compare multiple markets simultaneously. This feature helps you identify the most promising opportunities across different regions or market segments."
     },
     {
-      id: 4,
-      question: 'What payment methods do you accept?',
-      answer: 'We accept major credit cards (Visa, MasterCard, American Express) and PayPal.'
+      question: "What types of businesses can benefit from Market Flick?",
+      answer: "Market Flick is designed for businesses of all sizes, from startups to established companies. Whether you're launching a new product, expanding to new markets, or optimizing your current business strategy, our platform can provide valuable insights."
     },
     {
-      id: 5,
-      question: 'Is my data secure?',
-      answer: 'Absolutely. We use bank-level encryption and follow strict data protection regulations to ensure your information remains confidential.'
-    },
-    {
-      id: 6,
-      question: 'What kind of support do you provide?',
-      answer: 'We offer 24/7 email support, live chat during business hours, and comprehensive documentation for self-service.'
+      question: "How often is the market data updated?",
+      answer: "Our market data is updated in real-time, ensuring you always have access to the latest market trends, consumer behavior patterns, and competitive intelligence."
     }
   ];
 
-  // Toggle FAQ item expansion
-  const toggleFaqItemExpansion = (itemId: number) => {
-    setExpandedFaqItemId(prevExpandedId => 
-      prevExpandedId === itemId ? null : itemId
-    );
-  };
-
-  // Animation variants for FAQ items
-  const faqItemAnimationVariants = {
-    hidden: { 
-      opacity: 0, 
-      height: 0,
-      transition: {
-        duration: 0.3
-      }
-    },
-    visible: { 
-      opacity: 1, 
-      height: 'auto',
-      transition: {
-        duration: 0.3
-      }
-    }
-  };
-
-  // Animation variants for section entrance
-  const sectionEntranceAnimationVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50 
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-        damping: 15,
-        staggerChildren: 0.2
-      }
-    }
-  };
-
   return (
-    <section className="bg-gray-50 py-16 px-4">
-      <motion.div 
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={sectionEntranceAnimationVariants}
-        className="max-w-4xl mx-auto"
-      >
-        {/* Section Title */}
-        <motion.h2 
-          variants={sectionEntranceAnimationVariants}
-          className="text-4xl font-bold text-center mb-12 text-gray-900"
-        >
-          Frequently Asked Questions
-        </motion.h2>
+    <section className="faq-section py-16 sm:py-20 md:py-24 bg-gradient-to-b from-white to-indigo-50/30">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 sm:mb-16">
+          <span className="inline-block text-indigo-500 font-semibold text-sm sm:text-base mb-4">
+            Got Questions?
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 relative inline-block">
+            Frequently Asked Questions
+            <div className="absolute -bottom-2 left-0 w-full h-1 bg-indigo-500/20 rounded-full"></div>
+          </h2>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+            Find answers to common questions about Market Flick's AI-powered market research platform
+          </p>
+        </div>
 
-        {/* FAQ Items */}
-        {faqItems.map((faqItem) => (
-          <div 
-            key={faqItem.id}
-            className="bg-white rounded-lg shadow-sm mb-4 overflow-hidden"
-          >
-            {/* FAQ Question */}
-            <button
-              onClick={() => toggleFaqItemExpansion(faqItem.id)}
-              className="w-full text-left px-6 py-4 flex justify-between items-center 
-                hover:bg-gray-100 transition-colors duration-300 focus:outline-none"
-              aria-expanded={expandedFaqItemId === faqItem.id}
-              aria-controls={`faq-answer-${faqItem.id}`}
+        <div className="space-y-4 sm:space-y-6">
+          {faqItems.map((item, index) => (
+            <motion.div
+              key={index}
+              className={`bg-white rounded-xl border-2 transition-all duration-200 ${
+                openIndex === index 
+                  ? 'border-indigo-500 shadow-lg shadow-indigo-500/10' 
+                  : 'border-gray-100 hover:border-indigo-200 hover:shadow-md'
+              }`}
+              initial={false}
             >
-              <span className="text-lg font-medium text-gray-900">
-                {faqItem.question}
-              </span>
-              <i 
-                className={`fas ${
-                  expandedFaqItemId === faqItem.id 
-                  ? 'fa-chevron-up' 
-                  : 'fa-chevron-down'
-                } text-gray-600 transition-transform duration-300`}
-              ></i>
-            </button>
+              <button
+                className={`w-full text-left p-5 sm:p-6 flex justify-between items-center gap-4 ${
+                  openIndex === index ? 'bg-indigo-50/50' : ''
+                }`}
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+              >
+                <div className="flex items-center gap-3 flex-1">
+                  <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${
+                    openIndex === index 
+                      ? 'bg-indigo-500 text-white' 
+                      : 'bg-indigo-100 text-indigo-500'
+                  }`}>
+                    <i className="fas fa-question text-sm"></i>
+                  </span>
+                  <span className={`text-base sm:text-lg font-medium ${
+                    openIndex === index ? 'text-indigo-700' : 'text-gray-900'
+                  }`}>
+                    {item.question}
+                  </span>
+                </div>
+                <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
+                  openIndex === index 
+                    ? 'bg-indigo-500 text-white rotate-180' 
+                    : 'bg-gray-100 text-gray-500'
+                }`}>
+                  <i className="fas fa-chevron-down text-sm"></i>
+                </span>
+              </button>
 
-            {/* FAQ Answer */}
-            <AnimatePresence>
-              {expandedFaqItemId === faqItem.id && (
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  exit="hidden"
-                  variants={faqItemAnimationVariants}
-                  id={`faq-answer-${faqItem.id}`}
-                  className="px-6 pb-4 text-gray-700"
-                >
-                  {faqItem.answer}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        ))}
-      </motion.div>
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="px-6 sm:px-8 pb-6 pt-2 text-base text-gray-600 sm:pl-[4.5rem]">
+                      <div className="prose prose-indigo max-w-none">
+                        {item.answer}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Contact Support Link */}
+        <motion.div 
+          className="mt-12 sm:mt-16 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <p className="text-base text-gray-600 mb-4">
+            Still have questions? We're here to help!
+          </p>
+          <a 
+            href="#contact" 
+            className="inline-flex items-center gap-2 text-indigo-500 hover:text-indigo-600 font-medium group"
+          >
+            Contact Support
+            <i className="fas fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+          </a>
+        </motion.div>
+      </div>
     </section>
   );
 };
 
-export default ProductFrequentlyAskedQuestionsSection;
+export default FAQSection;

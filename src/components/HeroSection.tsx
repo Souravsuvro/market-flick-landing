@@ -1,307 +1,296 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-/**
- * HeroSection component represents the landing page's main hero section.
- * It includes a headline, subheadline, call-to-action buttons, and a new mark.
- * 
- * Key Features:
- * - Animated motion effects using Framer Motion
- * - Responsive design with Tailwind CSS
- * - Live Demo and Watch Demo buttons
- * - "New" mark to highlight recent updates
- */
+interface FileUpload {
+  file: File;
+  preview: string;
+  type: string;
+}
+
 const HeroSection: React.FC = () => {
-  // State variables for business idea, selected location, and animated text
   const [businessConcept, setBusinessConcept] = useState('');
   const [targetMarketLocation, setTargetMarketLocation] = useState('');
-  const [animatedTypingText, setAnimatedTypingText] = useState('');
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<FileUpload[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Memoized array of placeholder texts for animated typing effect
-  const placeholderTexts = useMemo(() => [
-    'AI-powered coffee shop in San Francisco',
-    'Sustainable fashion brand in London',
-    'Tech startup targeting remote workers',
-    'Eco-friendly food delivery service',
-    'Online learning platform for professionals'
-  ], []);
-
-  // Animation variants for staggered entrance effects
-  const containerAnimationVariants = {
+  const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2
-      }
+      transition: { staggerChildren: 0.2 }
     }
   };
 
-  // Variants for individual elements to create smooth entrance animation
-  const itemAnimationVariants = {
+  const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100
-      }
+      transition: { type: 'spring', stiffness: 100 }
     }
   };
 
-  // Effect hook to handle animated typing effect
-  useEffect(() => {
-    let currentIndex = 0;
-    let isDeleting = false;
-    let typingSpeed = 100;
-    let pauseTime = 2000;
-    let isMounted = true;
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files) return;
 
-    const type = () => {
-      if (!isMounted) return;
+    const newFiles: FileUpload[] = Array.from(files).map(file => ({
+      file,
+      preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : '',
+      type: file.type
+    }));
 
-      const fullText = placeholderTexts[currentIndex];
-      const currentText = isDeleting 
-        ? fullText.slice(0, animatedTypingText.length - 1) 
-        : fullText.slice(0, animatedTypingText.length + 1);
+    setUploadedFiles(prev => [...prev, ...newFiles]);
+  };
 
-      setAnimatedTypingText(currentText);
-
-      if (!isDeleting && currentText === fullText) {
-        setTimeout(() => { isDeleting = true; }, pauseTime);
-      } else if (isDeleting && currentText === '') {
-        isDeleting = false;
-        currentIndex = (currentIndex + 1) % placeholderTexts.length;
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => {
+      const newFiles = [...prev];
+      if (prev[index].preview) {
+        URL.revokeObjectURL(prev[index].preview);
       }
+      newFiles.splice(index, 1);
+      return newFiles;
+    });
+  };
 
-      setTimeout(type, isDeleting ? 50 : typingSpeed);
-    };
+  const getFileIcon = (type: string) => {
+    if (type.startsWith('image/')) return 'fa-image';
+    if (type.includes('pdf')) return 'fa-file-pdf';
+    if (type.includes('document')) return 'fa-file-word';
+    return 'fa-file';
+  };
 
-    type();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission with files and website URL
+    console.log({
+      businessConcept,
+      targetMarketLocation,
+      websiteUrl,
+      files: uploadedFiles.map(f => f.file)
+    });
+  };
 
-    return () => {
-      isMounted = false;
-    };
-  }, [animatedTypingText.length, placeholderTexts]);
-
-  // Function to handle market analysis
   const handleMarketAnalysis = () => {
-    // Implement market analysis logic
+    if (!businessConcept.trim()) {
+      alert('Please enter your business concept');
+      return;
+    }
+    if (!targetMarketLocation) {
+      alert('Please select a target market location');
+      return;
+    }
     console.log('Analyzing market for:', { businessConcept, targetMarketLocation });
   };
 
   return (
-    // Full-width container with centered content and responsive padding
-    <motion.section 
+    <motion.section
+      variants={containerVariants}
       initial="hidden"
       animate="visible"
-      variants={containerAnimationVariants}
-      className="hero-section__container flex-grow mx-auto w-full max-w-7xl px-4 pt-32 pb-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center bg-white"
+      className="relative min-h-screen bg-gradient-to-b from-white to-gray-50 overflow-hidden"
     >
-      <motion.article 
-        variants={itemAnimationVariants}
-        className="hero-section__market-analysis-panel text-left mb-8 order-1 lg:order-2"
-      >
-        <div className="hero-section__market-analysis-card bg-white p-8 rounded-2xl shadow-xl border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
-          <div className="hero-section__business-concept-wrapper relative">
-            <textarea 
-              className="hero-section__business-concept-input w-full h-40 p-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-custom focus:border-custom resize-none shadow-sm transition-all duration-300 mb-4"
-              placeholder={`Enter your business concept (e.g., ${animatedTypingText})`}
-              value={businessConcept}
-              onChange={(e) => setBusinessConcept(e.target.value)}
-            ></textarea>
-          </div>
-
-          <div className="hero-section__location-selector-wrapper relative">
-            <div className="hero-section__location-selector-container relative">
-              <div className="hero-section__location-icon-wrapper absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <i className="hero-section__location-icon fas fa-globe-americas text-custom opacity-70"></i>
-              </div>
-              <select 
-                className="hero-section__location-select 
-                  w-full 
-                  pl-10 
-                  pr-12 
-                  py-3 
-                  bg-white 
-                  border 
-                  border-gray-300 
-                  rounded-xl 
-                  appearance-none 
-                  focus:ring-2 
-                  focus:ring-custom 
-                  focus:border-custom 
-                  shadow-sm 
-                  transition-all 
-                  duration-300 
-                  text-gray-700 
-                  hover:border-custom 
-                  cursor-pointer"
-                value={targetMarketLocation}
-                onChange={(e) => setTargetMarketLocation(e.target.value)}
-                aria-label="Select target market location"
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="relative pt-16 md:pt-20 lg:pt-0 flex items-center min-h-screen">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-8 xl:gap-16 items-center">
+              {/* Content Section - Always First */}
+              <motion.div
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                className="w-full lg:col-span-6 mb-12 lg:mb-0"
               >
-                <option value="" disabled>Select Location</option>
-                <option value="us">United States</option>
-                <option value="uk">United Kingdom</option>
-                <option value="ca">Canada</option>
-                <option value="au">Australia</option>
-                <option value="eu">European Union</option>
-                <option value="apac">Asia Pacific</option>
-              </select>
-              <div className="hero-section__location-dropdown-icon-wrapper absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <motion.div
-                  className="hero-section__location-dropdown-icon-container 
-                    w-10 
-                    h-10 
-                    flex 
-                    items-center 
-                    justify-center 
-                    rounded-full 
-                    transition-all 
-                    duration-300 
-                    group"
-                  initial={{ scale: 1, backgroundColor: 'transparent' }}
-                  whileHover={{ 
-                    scale: 1.1, 
-                    backgroundColor: 'rgba(var(--custom-rgb), 0.1)' 
-                  }}
-                  transition={{ 
-                    type: 'spring', 
-                    stiffness: 300, 
-                    damping: 10 
-                  }}
-                >
-                  <motion.i 
-                    className="hero-section__location-dropdown-icon"
-                    initial={{ rotate: 0, opacity: 0.6 }}
-                    whileHover={{ 
-                      rotate: 180, 
-                      opacity: 1 
-                    }}
-                    transition={{ 
-                      type: 'spring', 
-                      stiffness: 300, 
-                      damping: 15 
-                    }}
-                  ></motion.i>
-                </motion.div>
-              </div>
-            </div>
-          </div>
+                <div className="max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
+                  <h1 className="mb-4 sm:mb-6">
+                    <span className="block text-sm sm:text-base font-semibold uppercase tracking-wide text-gray-500 lg:text-sm xl:text-base mb-2 sm:mb-3">
+                      <i className="fas fa-chart-network text-indigo-500 mr-2"></i>
+                      Market Analysis Platform
+                    </span>
+                    <span className="mt-2 block text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl tracking-tight font-extrabold">
+                      <span className="block text-gray-900 mb-1 sm:mb-2">Analyze Your</span>
+                      <span className="block text-indigo-600">Market Potential &</span>
+                      <span className="block text-gray-900 mb-1 sm:mb-2">Get AI-Driven Recommendations</span>
+                    </span>
+                  </h1>
+                  <div className="mt-4 sm:mt-6 mb-6 sm:mb-8 flex items-center justify-center lg:justify-start">
+                    <i className="fas fa-analytics text-2xl sm:text-3xl text-indigo-500 mr-3 transform -rotate-12"></i>
+                    <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-500">
+                      Unlock data-driven insights for your business growth and market success
+                    </p>
+                  </div>
 
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="hero-section__market-analysis-button w-full rounded-xl bg-custom py-4 text-black font-semibold hover:bg-custom/90 flex items-center justify-center gap-3 transform transition-all duration-300 shadow-lg mt-6"
-            onClick={handleMarketAnalysis}
-          >
-            <i className="hero-section__market-analysis-button-icon fas fa-chart-line text-green-500"></i>
-            Analyze Market
-          </motion.button>
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base md:text-lg font-medium text-white bg-indigo-600 rounded-lg sm:rounded-xl hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 sm:gap-3"
+                    >
+                      <i className="fas fa-chart-line text-base sm:text-lg md:text-xl"></i>
+                      Get Started
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-4 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base md:text-lg font-medium text-indigo-600 bg-white border-2 border-indigo-600 rounded-lg sm:rounded-xl hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 sm:gap-3"
+                    >
+                      <i className="fas fa-play text-base sm:text-lg md:text-xl"></i>
+                      Watch Demo
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
 
-          <div className="hero-section__how-it-works-panel bg-gray-50 p-6 rounded-xl border border-gray-200 mt-8">
-            <div className="hero-section__how-it-works-content flex items-start gap-4">
-              <i className="hero-section__how-it-works-icon fas fa-lightbulb text-yellow-500 mt-1"></i>
-              <div className="hero-section__how-it-works-text-container">
-                <h3 className="hero-section__how-it-works-title font-medium text-gray-900 mb-2">How it works</h3>
-                <ol className="hero-section__how-it-works-steps text-gray-600 space-y-2">
-                  <li className="hero-section__how-it-works-step">1. Enter your business concept or idea in detail</li>
-                  <li className="hero-section__how-it-works-step">2. Select your target market location</li>
-                  <li className="hero-section__how-it-works-step">3. Click analyze to get comprehensive market insights</li>
-                </ol>
-              </div>
+              {/* Form Section */}
+              <motion.div
+                variants={itemVariants}
+                initial="hidden"
+                animate="visible"
+                className="w-full lg:col-span-6"
+              >
+                <div className="max-w-lg mx-auto">
+                  <div className="bg-white/90 backdrop-blur-lg rounded-xl sm:rounded-2xl shadow-xl sm:shadow-2xl p-4 sm:p-6 lg:p-8">
+                    <div className="space-y-4 sm:space-y-5">
+                      <div>
+                        <label htmlFor="businessConcept" className="block text-sm sm:text-base font-medium text-gray-700 mb-1.5 sm:mb-2">
+                          Business Concept
+                        </label>
+                        <textarea
+                          id="businessConcept"
+                          rows={3}
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none shadow-sm transition-all duration-200 text-gray-900 placeholder-gray-400 text-sm sm:text-base"
+                          placeholder="Describe your business idea or concept..."
+                          value={businessConcept}
+                          onChange={(e) => setBusinessConcept(e.target.value)}
+                        ></textarea>
+                      </div>
+
+                      <div>
+                        <label htmlFor="targetMarketLocation" className="block text-sm sm:text-base font-medium text-gray-700 mb-1.5 sm:mb-2">
+                          Target Market Location
+                        </label>
+                        <select
+                          id="targetMarketLocation"
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition-all duration-200 text-gray-900 text-sm sm:text-base"
+                          value={targetMarketLocation}
+                          onChange={(e) => setTargetMarketLocation(e.target.value)}
+                        >
+                          <option value="">Select a location</option>
+                          <option value="us">United States</option>
+                          <option value="uk">United Kingdom</option>
+                          <option value="ca">Canada</option>
+                          <option value="au">Australia</option>
+                          <option value="eu">European Union</option>
+                          <option value="apac">Asia Pacific</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label htmlFor="websiteUrl" className="block text-sm sm:text-base font-medium text-gray-700 mb-1.5 sm:mb-2">
+                          Website URL (optional)
+                        </label>
+                        <input
+                          type="url"
+                          id="websiteUrl"
+                          value={websiteUrl}
+                          onChange={(e) => setWebsiteUrl(e.target.value)}
+                          placeholder="https://example.com"
+                          className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-sm transition-all duration-200 text-gray-900 placeholder-gray-400 text-sm sm:text-base"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm sm:text-base font-medium text-gray-700 mb-1.5 sm:mb-2">
+                          Upload Files (optional)
+                        </label>
+                        <div className="mt-1 flex justify-center px-4 sm:px-6 pt-4 sm:pt-5 pb-4 sm:pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-500 transition-colors duration-200">
+                          <div className="space-y-2 text-center">
+                            <svg
+                              className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400"
+                              stroke="currentColor"
+                              fill="none"
+                              viewBox="0 0 48 48"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                strokeWidth={2}
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                            <div className="flex text-sm sm:text-base text-gray-600 justify-center">
+                              <label
+                                htmlFor="file-upload"
+                                className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                              >
+                                <span>Upload files</span>
+                                <input
+                                  id="file-upload"
+                                  ref={fileInputRef}
+                                  type="file"
+                                  className="sr-only"
+                                  multiple
+                                  accept="image/*,.pdf,.doc,.docx"
+                                  onChange={handleFileUpload}
+                                />
+                              </label>
+                              <p className="pl-1">or drag and drop</p>
+                            </div>
+                            <p className="text-xs sm:text-sm text-gray-500">
+                              Images, PDF, or Documents up to 10MB
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Uploaded Files Preview */}
+                        {uploadedFiles.length > 0 && (
+                          <div className="mt-3 sm:mt-4 space-y-2">
+                            {uploadedFiles.map((file, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg"
+                              >
+                                <div className="flex items-center space-x-2 sm:space-x-3">
+                                  <i className={`fas ${getFileIcon(file.type)} text-indigo-500 text-lg sm:text-xl`}></i>
+                                  <span className="text-sm sm:text-base text-gray-700 truncate max-w-[150px] sm:max-w-xs">
+                                    {file.file.name}
+                                  </span>
+                                </div>
+                                <button
+                                  type="button"
+                                  onClick={() => removeFile(index)}
+                                  className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                                >
+                                  <i className="fas fa-times"></i>
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={handleMarketAnalysis}
+                        className="w-full inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 bg-indigo-500 text-white font-medium rounded-lg hover:bg-indigo-600 transition-all duration-200 shadow-md hover:shadow-lg gap-2 text-sm sm:text-base mt-2"
+                      >
+                        <i className="fas fa-chart-line"></i>
+                        Analyze Market
+                      </motion.button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </div>
-      </motion.article>
-
-      <motion.article 
-        variants={itemAnimationVariants}
-        className="hero-section__content-panel text-left mb-8 order-2 lg:order-1"
-      >
-        <motion.mark 
-          whileHover={{ scale: 1.05 }}
-          className="hero-section__new-feature-mark inline-flex items-center gap-2 px-4 py-2 bg-gray-200 rounded-full mb-6"
-        >
-          <span className="hero-section__new-feature-label text-custom font-semibold">New</span>
-          <span className="hero-section__new-feature-description text-gray-600 text-sm">Analyze 10x to Grow 100x with us</span>
-        </motion.mark>
-        
-        <h1 className="hero-section__main-headline text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
-          Transform Your Market Research with AI Intelligence
-        </h1>
-        
-        <p className="hero-section__subheadline text-lg md:text-xl text-gray-600 mb-8 leading-relaxed max-w-2xl">
-          Get instant, data-driven market insights powered by advanced AI technology. 
-          Make smarter business decisions faster.
-        </p>
-        
-        <nav className="hero-section__cta-navigation flex flex-col gap-4 mb-8">
-          <div className="hero-section__cta-button-group flex gap-4 mb-8">
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="hero-section__primary-cta-button relative overflow-hidden bg-custom hover:bg-custom/90 text-black font-semibold px-8 py-3 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl group"
-            >
-              <span className="hero-section__primary-cta-text">Start for free</span>
-              <i className="hero-section__primary-cta-icon fas fa-arrow-right text-black transition-transform duration-300 group-hover:translate-x-1"></i>
-              <span className="hero-section__primary-cta-overlay absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300 z-5"></span>
-            </motion.button>
-            
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="hero-section__secondary-cta-button relative overflow-hidden bg-transparent border-2 border-custom text-custom hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom transition-all duration-300 flex items-center justify-center gap-2 shadow-md hover:shadow-lg group rounded-full px-6 py-3"
-            >
-              <div className="hero-section__secondary-cta-icon-wrapper flex items-center justify-center relative">
-                <motion.div
-                  className="hero-section__secondary-cta-icon-background absolute inset-0 bg-custom opacity-0 group-hover:opacity-10 rounded-full transition-opacity duration-300"
-                  initial={{ scale: 0.8 }}
-                  whileHover={{ scale: 1 }}
-                ></motion.div>
-                <motion.svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 24 24" 
-                  className="hero-section__secondary-cta-icon relative z-10 w-6 h-6 text-custom transition-transform duration-300 group-hover:scale-110"
-                  initial={{ rotate: 0 }}
-                  whileHover={{ rotate: 360 }}
-                >
-                  <path 
-                    fill="currentColor" 
-                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14V8l6 4-6 4z"
-                  />
-                </motion.svg>
-              </div>
-              <span className="hero-section__secondary-cta-text ml-2 font-medium transition-colors duration-300 group-hover:text-opacity-80">
-                Live Demo
-              </span>
-              <motion.div 
-                className="hero-section__secondary-cta-hover-effect absolute bottom-0 left-0 w-full h-1 bg-custom origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full"
-                initial={{ scaleX: 0 }}
-                whileHover={{ scaleX: 1 }}
-              ></motion.div>
-            </motion.button>
-          </div>
-        </nav>
-
-        <div className="hero-section__performance-stats grid grid-cols-3 gap-4 bg-gray-50 p-6 rounded-xl border border-gray-200">
-          <div className="hero-section__performance-stat text-center">
-            <div className="hero-section__performance-stat-value text-3xl font-bold text-custom">10x</div>
-            <div className="hero-section__performance-stat-label text-sm text-gray-600">Market Speed</div>
-          </div>
-          <div className="hero-section__performance-stat text-center">
-            <div className="hero-section__performance-stat-value text-3xl font-bold text-custom">95%</div>
-            <div className="hero-section__performance-stat-label text-sm text-gray-600">Accuracy</div>
-          </div>
-          <div className="hero-section__performance-stat text-center">
-            <div className="hero-section__performance-stat-value text-3xl font-bold text-custom">24/7</div>
-            <div className="hero-section__performance-stat-label text-sm text-gray-600">AI Support</div>
-          </div>
-        </div>
-      </motion.article>
+      </div>
     </motion.section>
   );
 };
